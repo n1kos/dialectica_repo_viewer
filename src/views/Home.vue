@@ -7,6 +7,7 @@
     </h1>
     <SearchBar @search="search" />
     <RepositoryList />
+    <Repository :repository="{}" />
   </div>
 </template>
 
@@ -16,12 +17,14 @@ import SearchBar from "@/components/SearchBar.vue";
 import RepositoryList from "@/components/RepositoryList.vue";
 import { SearchData } from "@/shared/modeling/model-common";
 import { StorageService } from "@/shared/services/storage-service";
+import Repository from "@/components/Repository.vue";
 
 export default defineComponent({
   name: "Home",
   components: {
     SearchBar,
-    RepositoryList
+    RepositoryList,
+    Repository
   },
   setup() {
     const storageSrv = new StorageService();
