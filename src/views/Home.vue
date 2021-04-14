@@ -13,6 +13,7 @@
 import { defineComponent } from "vue";
 import SearchBar from "@/components/SearchBar.vue";
 import { SearchData } from "@/shared/modeling/model-common";
+import { StorageService } from "@/shared/services/storage-service";
 
 export default defineComponent({
   name: "Home",
@@ -20,7 +21,11 @@ export default defineComponent({
     SearchBar
   },
   setup() {
+    const storageSrv = new StorageService();
     const search = (query: SearchData) => {
+      storageSrv.clear();
+      storageSrv.setApiToken(query.token);
+      storageSrv.setSearchTerm(query.repo);
       console.log(query);
     };
 
