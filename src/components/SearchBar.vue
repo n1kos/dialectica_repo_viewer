@@ -17,22 +17,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, reactive } from "vue";
+import { SearchData } from "@/shared/modeling/model-common";
 
 export default defineComponent({
   name: "SearchBar",
-  data() {
-    return {
-      searchData: {
-        token: "",
-        repo: ""
-      }
+  setup(props, context) {
+    const searchData: SearchData = reactive({
+      token: "",
+      repo: ""
+    });
+
+    const handleInputChange = () => {
+      context.emit("search", searchData);
     };
-  },
-  methods: {
-    handleInputChange() {
-      this.$emit("search", this.searchData);
-    }
+    return {
+      searchData,
+      handleInputChange
+    };
   }
 });
 </script>
