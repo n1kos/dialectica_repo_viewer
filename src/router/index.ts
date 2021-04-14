@@ -4,17 +4,55 @@ import Home from "../views/Home.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    name: "Home",
+    name: "HomeRoute",
     component: Home
   },
   {
     path: "/about",
-    name: "About",
+    name: "AboutRoute",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue")
+  },
+  {
+    path: "/forks",
+    name: "ForksRoute",
+    // route level code-splitting
+    // this generates a separate chunk (forks.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "forks" */ "../views/ForksView.vue")
+  },
+  {
+    path: "/issues",
+    name: "IssuesRoute",
+    // route level code-splitting
+    // this generates a separate chunk (issues.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "issues" */ "../views/IssuesView.vue")
+  },
+  {
+    path: "/pull-requests",
+    name: "PullRequestsRoute",
+    // route level code-splitting
+    // this generates a separate chunk (---.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(
+        /* webpackChunkName: "pull-requests" */ "../views/PullRequestsView.vue"
+      )
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "FourOhFoursRoute",
+    // route level code-splitting
+    // this generates a separate chunk (---.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "pull-requests" */ "../views/404sView.vue")
   }
 ];
 
