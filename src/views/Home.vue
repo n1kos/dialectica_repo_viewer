@@ -1,18 +1,36 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <h1 class="">
+      Find
+      <span class="">GitHub</span>
+      Repositories:
+    </h1>
+    <SearchBar @search="search" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import SearchBar from "@/components/SearchBar.vue";
+import { SearchData } from "@/shared/modeling/model-common";
 
 export default defineComponent({
   name: "Home",
   components: {
-    HelloWorld
+    SearchBar
+  },
+  setup() {
+    const search = (query: SearchData) => {
+      console.log(query);
+    };
+
+    return {
+      search
+    };
   }
 });
 </script>
+
+<style lang="scss">
+@import "@/design/index.scss";
+</style>
