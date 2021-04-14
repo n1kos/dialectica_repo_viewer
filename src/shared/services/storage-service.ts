@@ -53,6 +53,7 @@ export class StorageService {
   }
 
   // ensure that properties names are returned after JSON parsing as camelCase
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private toCamelCase(key: string, value: any) {
     if (value && typeof value === "object") {
       for (const k in value) {
