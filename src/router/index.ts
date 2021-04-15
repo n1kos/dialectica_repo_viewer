@@ -17,25 +17,45 @@ const routes: Array<RouteRecordRaw> = [
       import(/* webpackChunkName: "about" */ "../views/About.vue")
   },
   {
-    path: "/forks",
+    path: "/repo/:id",
+    name: "RepoRoute",
+    // route level code-splitting
+    // this generates a separate chunk (forks.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(
+        /* webpackChunkName: "Repository" */ "../components/Repository.vue"
+      ),
+    props: route => ({
+      id: route.params.id
+    })
+  },
+  {
+    path: "/repo/:id/forks",
     name: "ForksRoute",
     // route level code-splitting
     // this generates a separate chunk (forks.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "forks" */ "../views/ForksView.vue")
+      import(/* webpackChunkName: "forks" */ "../views/ForksView.vue"),
+    props: route => ({
+      id: route.params.id
+    })
   },
   {
-    path: "/issues",
+    path: "/repo/:id/issues",
     name: "IssuesRoute",
     // route level code-splitting
     // this generates a separate chunk (issues.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "issues" */ "../views/IssuesView.vue")
+      import(/* webpackChunkName: "issues" */ "../views/IssuesView.vue"),
+    props: route => ({
+      id: route.params.id
+    })
   },
   {
-    path: "/pull-requests",
+    path: "/repo/:id/pull-requests",
     name: "PullRequestsRoute",
     // route level code-splitting
     // this generates a separate chunk (---.[hash].js) for this route
@@ -43,7 +63,10 @@ const routes: Array<RouteRecordRaw> = [
     component: () =>
       import(
         /* webpackChunkName: "pull-requests" */ "../views/PullRequestsView.vue"
-      )
+      ),
+    props: route => ({
+      id: route.params.id
+    })
   },
   {
     path: "/:pathMatch(.*)*",
