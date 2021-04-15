@@ -1,21 +1,33 @@
 <template>
   <div class="">
-    <!-- {{ repositories }} -->
-    <ul class="card">
+    <ul>
       <li
-        class="card-content "
+        class=""
         v-for="repository in repositories.data.search.repos"
         :key="repository.repo.id"
       >
-        <a class="card-header" :href="repository.repo.url"
-          ><span>{{ repository.repo.description }}</span></a
-        >
-        <span class="card-content">{{ repository.repo.description }}</span>
-        <span class="card-footer">{{
-          `Created at ${repository.repo.createdAt}`
-        }}</span>
-        <span>{{ `Forks ${repository.repo.forkCount}` }}</span>
-        <!-- {{ repository }} -->
+        <div class="card">
+          <div class="card-content">
+            <p class="title">
+              {{ repository.repo.name }}
+            </p>
+            <p class="subtitle">{{ repository.repo.description }}</p>
+            <p class="subtitle">
+              {{ `Created at ${repository.repo.createdAt}` }}
+            </p>
+            <p class="subtitle">{{ `Forks ${repository.repo.forkCount}` }}</p>
+          </div>
+          <footer class="card-footer">
+            <p class="card-footer-item">
+              <span>
+                <a :href="repository.repo.url">{{ repository.repo.url }}</a>
+              </span>
+            </p>
+            <p class="card-footer-item">
+              <span> Toggle Star For This Repo </span>
+            </p>
+          </footer>
+        </div>
       </li>
     </ul>
   </div>
@@ -39,6 +51,7 @@ query {
     repos: edges {
       repo: node {
         ... on Repository {
+          name,
           url,
           createdAt,
           description,
