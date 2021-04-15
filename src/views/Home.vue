@@ -42,6 +42,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
-@import "@/design/index.scss";
-</style>
+<style lang="scss"></style>
