@@ -12,8 +12,17 @@ import router from "./router";
 // import store from "./store";
 import { StorageService } from "./shared/services/storage-service";
 
-const storageSrv = new StorageService();
-const token = storageSrv.getApiToken();
+/**
+ * ?this is just temporary so i wont have to type the token everytime
+ */
+// const storageSrv = new StorageService();
+// const token =
+//   storageSrv.getApiToken() === null
+//     ? process.env.VUE_APP_GITHUB_ACCESS_TOKEN
+//     : storageSrv.getApiToken();
+// console.log(token);
+
+const token = process.env.VUE_APP_GITHUB_ACCESS_TOKEN;
 
 const additiveLink = from([
   new ApolloLink((operation, forward) => {

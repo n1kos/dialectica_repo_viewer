@@ -1,11 +1,7 @@
 <template>
   <div class="">
-    <ul>
-      <li
-        class=""
-        v-for="repository in repositories.data.search.repos"
-        :key="repository.repo.id"
-      >
+    <ul v-if="repositories.length">
+      <li class="" v-for="repository in repositories" :key="repository.id">
         <RepositoryItem
           :repository="repository"
           :search-options="searchOptions"
@@ -15,8 +11,10 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
-import { RepoData } from "../shared/modeling/model-static";
+import { defineComponent, toRefs } from "vue";
+import { useQuery, useResult } from "@vue/apollo-composable";
+import { SearchResultItemConnection } from "@octokit/graphql-schema";
+import { SEARCH_REPOS } from "@/shared/graphql/documents";
 import RepositoryItem from "@/components/RepositoryItem.vue";
 
 export default defineComponent({
@@ -24,35 +22,30 @@ export default defineComponent({
   components: {
     RepositoryItem
   },
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setup(props, context) {
-    /**
- *? query to get data:
-query {
-  search(
-    type:REPOSITORY,
-    query: "*react*",
-    last: 100
-  ) {
-    repos: edges {
-      repo: node {
-        ... on Repository {
-          name,
-          url,
-          createdAt,
-          description,
-          forkCount,
-          id,
-        }
+  props: {
+    searchOptions: {
+      type: Object,
+      default() {
+        return { query: "", limit: 10 };
       }
     }
-  }
-}
- */
-    // get some static data to work with
-    const repositories: object = RepoData;
+  },
+  setup(props: { searchOptions: Record<string, any> }) {
+    const { searchOptions } = toRefs(props);
+
+    const { result, loading, error } = useQuery<{
+      search: SearchResultItemConnection;
+    }>(SEARCH_REPOS, searchOptions);
+
+    const repositories = useResult(
+      result,
+      [],
+      data => data.search && data.search.edges
+    );
 
     return {
+      loading,
+      error,
       repositories
     };
   }
