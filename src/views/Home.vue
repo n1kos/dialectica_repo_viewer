@@ -6,13 +6,13 @@
       Repositories:
     </span>
     <SearchBar @search="search" />
-    <RepositoryList />
+    <RepositoryList :search-options="searchOptions" />
     <!-- <Repository :repository="{}" /> -->
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, reactive } from "vue";
 import SearchBar from "@/components/SearchBar.vue";
 import RepositoryList from "@/components/RepositoryList.vue";
 import { SearchData } from "@/shared/modeling/model-common";
@@ -28,14 +28,21 @@ export default defineComponent({
   },
   setup() {
     const storageSrv = new StorageService();
+    const searchOptions = reactive({
+      query: "",
+      limit: 10
+    });
+
     const search = (query: SearchData) => {
       storageSrv.clear();
       storageSrv.setApiToken(query.token);
       storageSrv.setSearchTerm(query.repo);
+      searchOptions.query = query.repo;
       console.log(query);
     };
 
     return {
+      searchOptions,
       search
     };
   }

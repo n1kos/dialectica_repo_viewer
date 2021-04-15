@@ -6,34 +6,10 @@
         v-for="repository in repositories.data.search.repos"
         :key="repository.repo.id"
       >
-        <div class="card">
-          <div class="card-content">
-            <router-link
-              :to="{
-                name: 'RepoRoute',
-                params: { id: repository.repo.name }
-              }"
-              ><p class="title">
-                {{ repository.repo.name }}
-              </p>
-            </router-link>
-            <p class="subtitle">{{ repository.repo.description }}</p>
-            <p class="subtitle">
-              {{ `Created at ${repository.repo.createdAt}` }}
-            </p>
-            <p class="subtitle">{{ `Forks ${repository.repo.forkCount}` }}</p>
-          </div>
-          <footer class="card-footer">
-            <p class="card-footer-item">
-              <span>
-                <a :href="repository.repo.url">{{ repository.repo.url }}</a>
-              </span>
-            </p>
-            <p class="card-footer-item">
-              <span> Toggle Star For This Repo </span>
-            </p>
-          </footer>
-        </div>
+        <RepositoryItem
+          :repository="repository"
+          :search-options="searchOptions"
+        />
       </li>
     </ul>
   </div>
@@ -41,9 +17,13 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { RepoData } from "../shared/modeling/model-static";
+import RepositoryItem from "@/components/RepositoryItem.vue";
 
 export default defineComponent({
   name: "RepositoryList",
+  components: {
+    RepositoryItem
+  },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setup(props, context) {
     /**
