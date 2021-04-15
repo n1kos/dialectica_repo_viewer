@@ -1,18 +1,32 @@
 <template>
   <form class="">
-    <div class="">
-      <input
-        v-model="searchData.token"
-        class="search-input"
-        placeholder="Token"
-      />
-      <input
-        v-model="searchData.repo"
-        class="search-input"
-        placeholder="Ex. React"
-      />
+    <div class="columns">
+      <div class="column">
+        <span class="title is-6">Token</span>
+        <input
+          v-model="searchData.token"
+          class="input"
+          type="text"
+          placeholder="Token"
+        />
+      </div>
+      <div class="column">
+        <span class="title is-6">Search Term</span>
+        <input
+          v-model="searchData.repo"
+          class="input"
+          type="text"
+          placeholder="Ex. React"
+        />
+      </div>
     </div>
-    <button @click.prevent="handleInputChange">Search</button>
+    <button
+      class="button  is-primary is-large is-rounded"
+      type="submit"
+      @click.prevent="handleInputChange"
+    >
+      Search
+    </button>
   </form>
 </template>
 

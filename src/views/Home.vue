@@ -1,10 +1,10 @@
 <template>
   <div class="home">
-    <h1 class="">
+    <span class="title is-3">
       Find
-      <span class="">GitHub</span>
+      <span class="title is 2">GitHub</span>
       Repositories:
-    </h1>
+    </span>
     <SearchBar @search="search" />
     <RepositoryList />
     <Repository :repository="{}" />
