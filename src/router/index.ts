@@ -28,45 +28,47 @@ const routes: Array<RouteRecordRaw> = [
       ),
     props: route => ({
       id: route.params.id
-    })
-  },
-  {
-    path: "/repo/:id/forks",
-    name: "ForksRoute",
-    // route level code-splitting
-    // this generates a separate chunk (forks.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "forks" */ "../views/ForksView.vue"),
-    props: route => ({
-      id: route.params.id
-    })
-  },
-  {
-    path: "/repo/:id/issues",
-    name: "IssuesRoute",
-    // route level code-splitting
-    // this generates a separate chunk (issues.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "issues" */ "../views/IssuesView.vue"),
-    props: route => ({
-      id: route.params.id
-    })
-  },
-  {
-    path: "/repo/:id/pull-requests",
-    name: "PullRequestsRoute",
-    // route level code-splitting
-    // this generates a separate chunk (---.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(
-        /* webpackChunkName: "pull-requests" */ "../views/PullRequestsView.vue"
-      ),
-    props: route => ({
-      id: route.params.id
-    })
+    }),
+    children: [
+      {
+        path: "/repo/:id/forks",
+        name: "ForksRoute",
+        // route level code-splitting
+        // this generates a separate chunk (forks.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+          import(/* webpackChunkName: "forks" */ "../views/ForksView.vue"),
+        props: route => ({
+          id: route.params.id
+        })
+      },
+      {
+        path: "/repo/:id/issues",
+        name: "IssuesRoute",
+        // route level code-splitting
+        // this generates a separate chunk (issues.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+          import(/* webpackChunkName: "issues" */ "../views/IssuesView.vue"),
+        props: route => ({
+          id: route.params.id
+        })
+      },
+      {
+        path: "/repo/:id/pull-requests",
+        name: "PullRequestsRoute",
+        // route level code-splitting
+        // this generates a separate chunk (---.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+          import(
+            /* webpackChunkName: "pull-requests" */ "../views/PullRequestsView.vue"
+          ),
+        props: route => ({
+          id: route.params.id
+        })
+      }
+    ]
   },
   {
     path: "/:pathMatch(.*)*",

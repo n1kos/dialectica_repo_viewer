@@ -8,9 +8,15 @@
       >
         <div class="card">
           <div class="card-content">
-            <p class="title">
-              {{ repository.repo.name }}
-            </p>
+            <router-link
+              :to="{
+                name: 'RepoRoute',
+                params: { id: repository.repo.name }
+              }"
+              ><p class="title">
+                {{ repository.repo.name }}
+              </p>
+            </router-link>
             <p class="subtitle">{{ repository.repo.description }}</p>
             <p class="subtitle">
               {{ `Created at ${repository.repo.createdAt}` }}
