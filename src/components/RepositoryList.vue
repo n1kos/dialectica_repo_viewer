@@ -30,6 +30,8 @@ export default defineComponent({
       }
     }
   },
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setup(props: { searchOptions: Record<string, any> }) {
     const { searchOptions } = toRefs(props);
 

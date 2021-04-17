@@ -35,6 +35,7 @@
   </div>
 </template>
 <script lang="ts">
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { defineComponent, toRefs } from "vue";
 
 export default defineComponent({
@@ -49,6 +50,7 @@ export default defineComponent({
       required: true
     }
   },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setup(props) {
     return {};
   }
