@@ -1,10 +1,18 @@
 <template>
   <div class="card">
     <div class="card-content">
+      <!--
+        There seems to be an issue about passing params to router link, so this is a bit of a hack
+        to move forwards
+        https://github.com/vuejs/vue-router-next/issues/494
+        -->
       <router-link
         :to="{
           name: 'RepoRoute',
-          params: { id: repository.node.name }
+          params: {
+            id: repository.node.name,
+            repository: JSON.stringify(repository)
+          }
         }"
         ><p class="title">
           {{ repository.node.name }}

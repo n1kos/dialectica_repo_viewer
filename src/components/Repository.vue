@@ -32,19 +32,32 @@
       </ul>
     </div>
     repo description here
+    {{ getComputedRepository }}
+
+    {{ getComputedRepository.node }}
     <router-view></router-view>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ComputedRef, computed } from "vue";
 
 export default defineComponent({
   name: "Repository",
   props: {
     repository: {
-      type: Object,
+      type: String,
       required: true
     }
+  },
+
+  setup(context) {
+    const getComputedRepository: ComputedRef<string> = computed((): string =>
+      JSON.parse(context.repository)
+    );
+
+    return {
+      getComputedRepository
+    };
   }
 });
 </script>

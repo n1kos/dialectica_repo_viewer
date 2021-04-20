@@ -26,9 +26,12 @@ const routes: Array<RouteRecordRaw> = [
       import(
         /* webpackChunkName: "Repository" */ "../components/Repository.vue"
       ),
-    props: route => ({
-      id: route.params.id
-    }),
+    props: route => {
+      console.log(route);
+      return {
+        ...route.params
+      };
+    },
     children: [
       {
         path: "/repo/:id/forks",
