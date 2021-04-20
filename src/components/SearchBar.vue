@@ -39,7 +39,8 @@ export default defineComponent({
   setup(props, context) {
     const searchData: SearchData = reactive({
       token: "",
-      repo: ""
+      // TODO: change to-->repo: "react"
+      repo: "react"
     });
 
     const handleInputChange = () => {
