@@ -2,7 +2,7 @@
   <div class="">
     <ul v-if="repositories.length">
       <li class="" v-for="repository in repositories" :key="repository.id">
-        <RepositoryItem
+        <RepositoryListItem
           :repository="repository"
           :search-options="searchOptions"
         />
@@ -15,12 +15,12 @@ import { defineComponent, toRefs } from "vue";
 import { useQuery, useResult } from "@vue/apollo-composable";
 import { SearchResultItemConnection } from "@octokit/graphql-schema";
 import { SEARCH_REPOS } from "@/shared/graphql/documents";
-import RepositoryItem from "@/components/RepositoryItem.vue";
+import RepositoryListItem from "@/components/RepositoryListItem.vue";
 
 export default defineComponent({
   name: "RepositoryList",
   components: {
-    RepositoryItem
+    RepositoryListItem
   },
   props: {
     searchOptions: {
