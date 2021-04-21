@@ -17,8 +17,6 @@ import SearchBar from "@/components/SearchBar.vue";
 import RepositoryList from "@/components/RepositoryList.vue";
 import { SearchData } from "@/shared/modeling/model-common";
 import { StorageService } from "@/shared/services/storage-service";
-import { useStore, store } from "../store/index";
-
 // import Repository from "@/components/Repository.vue";
 
 export default defineComponent({
@@ -41,12 +39,7 @@ export default defineComponent({
       storageSrv.setSearchTerm(query.repo);
       searchOptions.query = query.repo;
       console.log("I am searching for ", query);
-      // store.commit({})
     };
-    const store = useStore();
-    const repositories = ref(store.state);
-
-    console.log(store.state);
 
     return {
       searchOptions,

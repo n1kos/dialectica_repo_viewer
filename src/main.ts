@@ -9,7 +9,6 @@ import {
 import { ApolloClients } from "@vue/apollo-composable";
 import App from "./App.vue";
 import router from "./router";
-import { store, key } from "./store";
 
 // import { StorageService } from "./shared/services/storage-service";
 
@@ -54,6 +53,5 @@ const app = createApp({
 });
 
 app
-  .use(store, key)
   .use(router)
   .mount("#app");
