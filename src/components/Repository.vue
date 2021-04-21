@@ -2,9 +2,6 @@
   <div>
     <TabNavBarView></TabNavBarView>
     repo description here
-    {{ getComputedRepository }}
-
-    {{ getComputedRepository.node }}
     <router-view></router-view>
   </div>
 </template>
@@ -22,16 +19,6 @@ export default defineComponent({
       type: String,
       required: true
     }
-  },
-
-  setup(context) {
-    const getComputedRepository: ComputedRef<string> = computed((): string =>
-      JSON.parse(context.repository)
-    );
-
-    return {
-      getComputedRepository
-    };
   }
 });
 </script>

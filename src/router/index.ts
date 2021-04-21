@@ -26,12 +26,7 @@ const routes: Array<RouteRecordRaw> = [
       import(
         /* webpackChunkName: "Repository" */ "../components/Repository.vue"
       ),
-    props: route => {
-      console.log(route);
-      return {
-        ...route.params
-      };
-    },
+    props: true,
     children: [
       {
         path: "/repo/:id/forks",
@@ -41,9 +36,7 @@ const routes: Array<RouteRecordRaw> = [
         // which is lazy-loaded when the route is visited.
         component: () =>
           import(/* webpackChunkName: "forks" */ "../views/ForksView.vue"),
-        props: route => ({
-          id: route.params.id
-        })
+        props: true
       },
       {
         path: "/repo/:id/issues",
@@ -53,9 +46,7 @@ const routes: Array<RouteRecordRaw> = [
         // which is lazy-loaded when the route is visited.
         component: () =>
           import(/* webpackChunkName: "issues" */ "../views/IssuesView.vue"),
-        props: route => ({
-          id: route.params.id
-        })
+        props: true
       },
       {
         path: "/repo/:id/pull-requests",
@@ -67,9 +58,7 @@ const routes: Array<RouteRecordRaw> = [
           import(
             /* webpackChunkName: "pull-requests" */ "../views/PullRequestsView.vue"
           ),
-        props: route => ({
-          id: route.params.id
-        })
+        props: true
       }
     ]
   },
