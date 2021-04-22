@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from "vue";
+import { defineComponent, reactive } from "vue";
 import SearchBar from "@/components/SearchBar.vue";
 import RepositoryList from "@/components/RepositoryList.vue";
 import { SearchData } from "@/shared/modeling/model-common";

@@ -1,7 +1,9 @@
+import { RepoDataRequest } from "@/shared/modeling/model-static";
 export class StorageService {
   private appIdentifier = "dialecticaApp";
   private apiToken = "ApiToken";
   private searchTerm = "SearchTerm";
+  private selectedRepository = "selectedRepository";
 
   public setApiToken(token: string): boolean {
     try {
@@ -36,9 +38,33 @@ export class StorageService {
       return false;
     }
   }
+
   public getSearchTerm(): string | null {
     const stringified = localStorage.getItem(
       `${this.appIdentifier}${this.searchTerm}`
+    );
+    if (stringified) {
+      return JSON.parse(stringified, this.toCamelCase);
+    } else {
+      return null;
+    }
+  }
+
+  public setselectedRepository(selectedRepository: RepoDataRequest): boolean {
+    try {
+      localStorage.setItem(
+        `${this.appIdentifier}${this.selectedRepository}`,
+        JSON.stringify(selectedRepository)
+      );
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  public getselectedRepository(): RepoDataRequest | null {
+    const stringified = localStorage.getItem(
+      `${this.appIdentifier}${this.selectedRepository}`
     );
     if (stringified) {
       return JSON.parse(stringified, this.toCamelCase);

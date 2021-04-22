@@ -6,18 +6,11 @@
         to move forwards
         https://github.com/vuejs/vue-router-next/issues/494
         -->
-      <router-link
-        :to="{
-          name: 'RepoRoute',
-          params: {
-            id: repository.node.name,
-            repository: JSON.stringify(repository)
-          }
-        }"
-        ><p class="title">
+      <a href="#" @click.prevent="selectItem(repository)"
+        ><p class="is-size-3">
           {{ repository.node.name }}
         </p>
-      </router-link>
+      </a>
       <p class="subtitle">{{ repository.node.description }}</p>
       <p class="subtitle">
         {{ `Created at ${repository.node.createdAt}` }}
@@ -44,7 +37,10 @@
 </template>
 <script lang="ts">
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { defineComponent, toRefs } from "vue";
+import router from "@/router";
+import { defineComponent } from "vue";
+import { StorageService } from "@/shared/services/storage-service";
+import { RepoDataRequest } from "@/shared/modeling/model-static";
 
 export default defineComponent({
   name: "RepositoryItem",
@@ -60,7 +56,18 @@ export default defineComponent({
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setup(props) {
-    return {};
+    const storageService: StorageService = new StorageService();
+
+    const selectItem = (item: RepoDataRequest): void => {
+      console.log(item);
+
+      storageService.setselectedRepository(item);
+      router.push({
+        name: "RepoRoute",
+        params: { id: props.repository.node.name }
+      });
+    };
+    return { selectItem };
   }
 });
 </script>
