@@ -1,8 +1,10 @@
 <template>
   <div>
-    <TabNavBarView></TabNavBarView>
-    repo description here
-    {{ repository }}
+    <div class="content">
+      <p class="title">{{ repository.node.name }}</p>
+      <p class="subtitle">{{ repository.node.description }}</p>
+    </div>
+    <TabNavBarView :repository="repository"></TabNavBarView>
     <router-view></router-view>
   </div>
 </template>

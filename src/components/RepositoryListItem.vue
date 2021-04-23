@@ -6,11 +6,13 @@
         to move forwards
         https://github.com/vuejs/vue-router-next/issues/494
         -->
-      <a href="#" @click.prevent="selectItem(repository)"
-        ><p class="is-size-3">
-          {{ repository.node.name }}
-        </p>
-      </a>
+
+      <p class="title">
+        <a href="#" @click.prevent="selectItem(repository)">
+          {{ repository.node.name }}</a
+        >
+      </p>
+
       <p class="subtitle">{{ repository.node.description }}</p>
       <p class="subtitle">
         {{ `Created at ${repository.node.createdAt}` }}

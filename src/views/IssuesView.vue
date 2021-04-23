@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="content">
     <span class="is-title">
       Issues
     </span>

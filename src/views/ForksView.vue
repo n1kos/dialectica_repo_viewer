@@ -1,12 +1,29 @@
 <template>
-  <div class="hello">Forks</div>
+  <div class="content">
+    <span class="is-title">
+      Forks
+    </span>
+    <p>data from this view {{ repository }}</p>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ComputedRef, computed } from "vue";
+import { RepoDataRequest } from "@/shared/modeling/model-static";
+import { StorageService } from "../shared/services/storage-service";
 
 export default defineComponent({
-  name: "ForksView"
+  name: "ForksView",
+  setup() {
+    const storageService: StorageService = new StorageService();
+    const repository: ComputedRef<RepoDataRequest | null> = computed(
+      (): RepoDataRequest | null => storageService.getselectedRepository()
+    );
+
+    return {
+      repository
+    };
+  }
 });
 </script>
 
