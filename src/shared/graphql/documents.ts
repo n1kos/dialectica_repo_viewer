@@ -21,6 +21,23 @@ const REPO_FRAGMENT = gql`
   }
 `;
 
+const ISSUES_FRAGMENT = gql`
+  fragment issues on Issue {
+    title
+    author {
+      login
+    }
+    url
+    labels(first: 1) {
+      edges {
+        node {
+          name
+        }
+      }
+    }
+  }
+`;
+
 export const SEARCH_REPOS = gql`
   ${REPO_FRAGMENT}
 
@@ -36,23 +53,14 @@ export const SEARCH_REPOS = gql`
 `;
 
 export const SEARCH_REPOS_ISSUES = gql`
-  query SearchRepoIssuesQuery($last: Int!, $owner: String!, $name: String!) {
+  ${ISSUES_FRAGMENT}
+
+  query SearchRepoIssues($last: Int!, $owner: String!, $name: String!) {
     repository(owner: $owner, name: $name) {
       issues(last: $last, states: OPEN) {
         edges {
           node {
-            title
-            author {
-              login
-            }
-            url
-            labels(first: 1) {
-              edges {
-                node {
-                  name
-                }
-              }
-            }
+            ...issues
           }
         }
       }
