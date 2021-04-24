@@ -52,6 +52,4 @@ const app = createApp({
   render: () => h(App)
 });
 
-app
-  .use(router)
-  .mount("#app");
+app.use(router).mount("#app");
