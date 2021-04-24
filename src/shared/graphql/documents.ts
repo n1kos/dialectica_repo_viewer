@@ -24,18 +24,17 @@ const REPO_FRAGMENT = gql`
 
 const ISSUES_FRAGMENT = gql`
   fragment issues on Issue {
-    title
+    body
+    comments {
+      totalCount
+    }
     author {
       login
     }
-    url
-    labels(first: 1) {
-      edges {
-        node {
-          name
-        }
-      }
-    }
+    createdAt
+    state
+    number
+    title
   }
 `;
 
@@ -56,9 +55,9 @@ export const SEARCH_REPOS = gql`
 export const SEARCH_REPOS_ISSUES = gql`
   ${ISSUES_FRAGMENT}
 
-  query SearchRepoIssues($last: Int!, $owner: String!, $name: String!) {
+  query SearchRepoIssues($first: Int!, $owner: String!, $name: String!) {
     repository(owner: $owner, name: $name) {
-      issues(last: $last, states: OPEN) {
+      issues(first: $first, states: OPEN) {
         edges {
           node {
             ...issues

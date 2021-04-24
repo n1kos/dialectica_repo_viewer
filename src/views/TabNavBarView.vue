@@ -5,7 +5,7 @@
         <router-link
           :to="{
             name: 'IssuesRoute',
-            params: { id: repository.node.name }
+            params: { id: repository.node.nameWithOwner }
           }"
         >
           <div class="level-item has-text-centered">
@@ -20,7 +20,7 @@
         <router-link
           :to="{
             name: 'PullRequestsRoute',
-            params: { id: repository.node.name }
+            params: { id: repository.node.nameWithOwner }
           }"
         >
           <div class="level-item has-text-centered">
@@ -37,7 +37,7 @@
         <router-link
           :to="{
             name: 'ForksRoute',
-            params: { id: repository.node.name }
+            params: { id: repository.node.nameWithOwner }
           }"
         >
           <div class="level-item has-text-centered">

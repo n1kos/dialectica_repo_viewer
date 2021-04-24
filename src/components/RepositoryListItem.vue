@@ -38,7 +38,6 @@
   </div>
 </template>
 <script lang="ts">
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import router from "@/router";
 import { defineComponent } from "vue";
 import { StorageService } from "@/shared/services/storage-service";
@@ -61,7 +60,7 @@ export default defineComponent({
     const storageService: StorageService = new StorageService();
 
     const selectItem = (item: RepoDataRequest): void => {
-      console.log(item);
+      // console.log(item);
 
       storageService.setselectedRepository(item);
       router.push({
