@@ -9,7 +9,7 @@
 
       <p class="title">
         <a href="#" @click.prevent="selectItem(repository)">
-          {{ repository.node.name }}</a
+          {{ repository.node.nameWithOwner }}</a
         >
       </p>
 

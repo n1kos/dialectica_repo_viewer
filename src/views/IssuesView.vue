@@ -1,22 +1,20 @@
 <template>
   <div class="content">
-    <span class="is-title">
-      Issues
-    </span>
+    <span v-if="loading">Loading...</span>
+    <span class="is-title"> Issues {{ issues }} </span>
     <!-- <p>data from this view {{ repository }}</p> -->
-    {{ result }}
+    <!-- {{ result }} -->
+    {{ repository.value }}
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ComputedRef, computed } from "vue";
-// import { SearchResultItemConnection } from "@octokit/graphql-schema";
+import { Issue } from "@octokit/graphql-schema";
 import { useQuery, useResult } from "@vue/apollo-composable";
 import { SEARCH_REPOS_ISSUES } from "@/shared/graphql/documents";
 import { RepoDataRequest } from "@/shared/modeling/model-static";
 import { StorageService } from "../shared/services/storage-service";
-
-// import { SEARCH_REPOS } from "@/shared/graphql/documents";
 
 export default defineComponent({
   name: "IssuesView",
@@ -26,43 +24,27 @@ export default defineComponent({
       (): RepoDataRequest | null => storageService.getselectedRepository()
     );
 
+    console.log(repository);
+
     const searchOptions = {
-      owner: "facebook",
-      name: "react",
+      //@ts-expect-error need to add the issue interface
+      owner: repository.value.node.owner.login,
+      //@ts-expect-error need to add the issue interface
+      name: repository.value.node.name,
       last: 10
     };
 
-    const { error, loading, result } = useQuery(
-      SEARCH_REPOS_ISSUES,
-      searchOptions
-    );
-    // const { result, loading, error } = useQuery<{
-    //   search: SearchResultItemConnection;
-    // }>(SEARCH_REPOS_ISSUES, searchOptions);
+    const { result, loading, error } = useQuery<{
+      search: Issue;
+    }>(SEARCH_REPOS_ISSUES, searchOptions);
 
-    // const issues = useResult(
-    //   result,
-    //   [],
-    //   data => data.search && data.search.edges
-    // );
-
-    // const searchOptions = { query: "react", limit: 10 };
-
-    // const { result, loading, error } = useQuery<{
-    //   search: SearchResultItemConnection;
-    // }>(SEARCH_REPOS, searchOptions);
-
-    // const issues = useResult(
-    //   result,
-    //   [],
-    //   data => data.search && data.search.edges
-    // );
-
-    // console.log(issues);
+    const issues = useResult(result, [], data => data);
 
     return {
       repository,
-      result
+      error,
+      loading,
+      issues
     };
   }
 });

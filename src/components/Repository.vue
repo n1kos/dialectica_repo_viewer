@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="content">
-      <p class="title">{{ repository.node.name }}</p>
+      <p class="title">{{ repository.node.nameWithOwner }}</p>
       <p class="subtitle">{{ repository.node.description }}</p>
     </div>
     <TabNavBarView :repository="repository"></TabNavBarView>

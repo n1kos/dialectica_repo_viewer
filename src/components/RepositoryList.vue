@@ -1,5 +1,6 @@
 <template>
   <div class="">
+    <span v-if="loading">Loading...</span>
     <ul v-if="repositories.length">
       <li class="" v-for="repository in repositories" :key="repository.id">
         <RepositoryListItem

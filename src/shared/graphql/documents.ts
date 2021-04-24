@@ -3,7 +3,8 @@ import gql from "graphql-tag";
 const REPO_FRAGMENT = gql`
   fragment repo on Repository {
     id
-    name: nameWithOwner
+    name
+    nameWithOwner
     owner {
       id
       login
