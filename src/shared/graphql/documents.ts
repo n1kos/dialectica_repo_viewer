@@ -67,3 +67,29 @@ export const SEARCH_REPOS_ISSUES = gql`
     }
   }
 `;
+
+export const SEARCH_REPOS_ISSUES_MORE = gql`
+  ${ISSUES_FRAGMENT}
+
+  query SearchRepoIssuesMore(
+    $first: Int!
+    $after: String!
+    $owner: String!
+    $name: String!
+  ) {
+    repository(owner: $owner, name: $name) {
+      issues(first: $first, after: $after) {
+        nodes {
+          ...issues
+        }
+        edges {
+          cursor
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+      }
+    }
+  }
+`;

@@ -1,12 +1,11 @@
 <template>
   <div class="content">
     <span v-if="loading">Loading...</span>
-    <!-- <span class="is-title"> Issues {{ issues }} </span> -->
-    <IssuesDataTable :issues="issues"></IssuesDataTable>
-
-    <!-- <p>data from this view {{ repository }}</p> -->
-    <!-- {{ result }} -->
-    {{ repository.value }}
+    <span v-else-if="error">Error!</span>
+    <IssuesDataTable
+      :issues="issues"
+      :searchOptions="searchOptions"
+    ></IssuesDataTable>
   </div>
 </template>
 
@@ -23,27 +22,13 @@ export default defineComponent({
   components: {
     IssuesDataTable
   },
-  // filters: {
-  //   parseAuthor(item: { name: ""; login: "" }) {
-  //     return item.login;
-  //   }
-  // },
+
   setup() {
     const storageService: StorageService = new StorageService();
     const repository: ComputedRef<RepoDataRequest | null> = computed(
       (): RepoDataRequest | null => storageService.getselectedRepository()
     );
 
-    // const parseAuthor: ComputedRef<
-    //   { name: ""; login: "" } | null | string
-    // > = computed((item): { name: ""; login: "" } | null | string => {
-    //   console.log(item);
-    //   if (item !== null) {
-    //     return item.login;
-    //   } else {
-    //     return "no data";
-    //   }
-    // });
     const searchOptions = {
       //@ts-expect-error need to add the issue interface
       owner: repository.value.node.owner.login,
@@ -64,11 +49,9 @@ export default defineComponent({
       data => data.repository.issues.edges
     );
 
-    // issues.then()
-    // console.log(issues);
     return {
       repository,
-      // parseAuthor,
+      searchOptions,
       error,
       loading,
       issues
