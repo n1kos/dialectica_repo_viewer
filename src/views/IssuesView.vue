@@ -7,6 +7,7 @@
       :loading="loading"
       :searchOptions="searchOptions"
       @loadMoreIssues="loadMoreIssues"
+      :moreIssues="moreIssues"
     ></IssuesDataTable>
   </div>
 </template>
@@ -30,6 +31,8 @@ export default defineComponent({
     const repository: ComputedRef<RepoDataRequest | null> = computed(
       (): RepoDataRequest | null => storageService.getselectedRepository()
     );
+
+    const moreIssues = ref([]);
 
     const searchOptions = {
       //@ts-expect-error need to add the issue interface
@@ -60,10 +63,13 @@ export default defineComponent({
     );
 
     const loadMoreIssues = async () => {
-      await fetchMore({});
+      const moreResult = await fetchMore({});
 
       //@ts-expect-error need to add the issue interface
       variables.value.after = result.value.repository.issues.pageInfo.endCursor;
+
+      //@ts-expect-error need to add the issue interface
+      moreIssues.value.push(...moreResult.data.repository.issues.nodes);
     };
 
     return {
@@ -72,7 +78,8 @@ export default defineComponent({
       error,
       loading,
       issues,
-      loadMoreIssues
+      loadMoreIssues,
+      moreIssues
     };
   }
 });
