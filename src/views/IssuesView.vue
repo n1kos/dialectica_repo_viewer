@@ -4,6 +4,7 @@
     <span v-else-if="error">Error!</span>
     <IssuesDataTable
       :issues="issues"
+      :loading="loading"
       :moreIssues="moreIssues"
       :searchOptions="searchOptions"
       @loadMoreIssues="loadMoreIssues"
@@ -14,12 +15,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ComputedRef, computed, reactive, ref } from "vue";
+import { defineComponent, ComputedRef, computed, ref, watch } from "vue";
 import { useQuery, useResult } from "@vue/apollo-composable";
-import {
-  SEARCH_REPOS_ISSUES,
-  SEARCH_REPOS_ISSUES_MORE
-} from "@/shared/graphql/documents";
+import { SEARCH_REPOS_ISSUES_MORE } from "@/shared/graphql/documents";
 import { RepoDataRequest } from "@/shared/modeling/model-static";
 import { StorageService } from "@/shared/services/storage-service";
 import IssuesDataTable from "@/views/IssuesTableView.vue";
@@ -45,12 +43,13 @@ export default defineComponent({
       owner: repository.value.node.owner.login,
       //@ts-expect-error need to add the issue interface
       name: repository.value.node.name,
-      first: 20
+      first: 20,
+      after: null
     };
 
-    const { result, loading, error, fetchMore } = useQuery<{}>(
-      SEARCH_REPOS_ISSUES,
-      searchOptions
+    const { result, variables, loading, error, fetchMore } = useQuery<{}>(
+      SEARCH_REPOS_ISSUES_MORE,
+      { fetchPolicy: 'cache-and-network', ...searchOptions },
     );
 
     const issues = useResult(
@@ -60,36 +59,56 @@ export default defineComponent({
       data => data.repository.issues.nodes
     );
 
-    const cursor = reactive(
-      useResult(
-        result,
-        [],
-        //@ts-expect-error need to add the issue interface
-        data => data.repository.issues.pageInfo.endCursor
-      )
+    const cursor = useResult(
+      result,
+      "",
+      //@ts-expect-error need to add the issue interface
+      data => data.repository.issues.pageInfo.endCursor
     );
-    // console.log(issues);
+
+    // watch(result, value => {
+    //   console.log(value);
+    // });
+    // const plusOne = computed({
+    //   get: () => this.value,
+    //   set: val => {
+    //     val;
+    //   }
+    // });
 
     const loadMoreIssues = async () => {
-      loadingMore.value = true;
-      const moreResult = await fetchMore({
-        variables: {
-          query: SEARCH_REPOS_ISSUES_MORE,
-          after: cursor
-        }
-      });
+      // console.log("cursor", result);
+      // loadingMore.value = true;
+      await fetchMore({});
 
       //@ts-expect-error need to add the issue interface
-      cursor.value = moreResult.data.repository.issues.pageInfo.endCursor;
-      // console.log(cursor.value);
-      //@ts-expect-error need to add the issue interface
-      moreIssues.value.push(...moreResult.data.repository.issues.nodes);
-      // console.log(moreIssues.value);
+      variables.value.after = result.value.repository.issues.pageInfo.endCursor;
 
-      loadingMore.value = false;
-      //@ts-expect-error need to add the issue interface
-      loadingMoreError.value = moreResult.error;
-      return moreIssues.value;
+      console.log(result);
+
+      ////@ts-expect-error need to add the issue interface
+      // issues.value.push(...result.value.repository.issues.nodes);
+      // console.log(moreResult);
+      // console.log(result);
+
+      ////@ts-expect-error need to add the issue interface
+      // console.log(moreResult.data.repository.issues.pageInfo.endCursor);
+
+      ////@ts-expect-error need to add the issue interface
+      // plusOne.value = moreResult.data.repository.issues.pageInfo.endCursor;
+
+      // //@ts-expect-error need to add the issue interface
+      // cursor.value = moreResult.data.repository.issues.pageInfo.endCursor;
+      // console.log("updated cursor:", plusOne.value);
+
+      ////@ts-expect-error need to add the issue interface
+      // moreIssues.value.push(...result.data.repository.issues.nodes);
+      // // console.log(moreIssues.value);
+
+      // loadingMore.value = false;
+      // //@ts-expect-error need to add the issue interface
+      // loadingMoreError.value = moreResult.error;
+      // return moreIssues.value;
     };
 
     return {

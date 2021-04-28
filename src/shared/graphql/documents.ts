@@ -75,7 +75,7 @@ export const SEARCH_REPOS_ISSUES_MORE = gql`
 
   query SearchRepoIssuesMore(
     $first: Int!
-    $after: String!
+    $after: String
     $owner: String!
     $name: String!
   ) {

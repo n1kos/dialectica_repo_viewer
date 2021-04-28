@@ -146,9 +146,15 @@ export default defineComponent({
       }
     },
     moreIssues: {
-      type: [],
+      type: Object,
       default() {
-        return [];
+        return {};
+      }
+    },
+    loading: {
+      type: Boolean,
+      default() {
+        false;
       }
     },
     loadingMore: {
