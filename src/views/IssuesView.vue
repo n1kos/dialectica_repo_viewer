@@ -5,11 +5,8 @@
     <IssuesDataTable
       :issues="issues"
       :loading="loading"
-      :moreIssues="moreIssues"
       :searchOptions="searchOptions"
       @loadMoreIssues="loadMoreIssues"
-      :loadingMore="loadingMore"
-      :loadingMoreError="loadingMoreError"
     ></IssuesDataTable>
   </div>
 </template>
@@ -34,10 +31,6 @@ export default defineComponent({
       (): RepoDataRequest | null => storageService.getselectedRepository()
     );
 
-    const moreIssues = ref([]);
-    const loadingMore = ref(false);
-    const loadingMoreError = ref(false);
-
     const searchOptions = {
       //@ts-expect-error need to add the issue interface
       owner: repository.value.node.owner.login,
@@ -49,7 +42,7 @@ export default defineComponent({
 
     const { result, variables, loading, error, fetchMore } = useQuery<{}>(
       SEARCH_REPOS_ISSUES_MORE,
-      { fetchPolicy: 'cache-and-network', ...searchOptions },
+      { fetchPolicy: "cache-and-network", ...searchOptions }
     );
 
     const issues = useResult(
@@ -66,49 +59,11 @@ export default defineComponent({
       data => data.repository.issues.pageInfo.endCursor
     );
 
-    // watch(result, value => {
-    //   console.log(value);
-    // });
-    // const plusOne = computed({
-    //   get: () => this.value,
-    //   set: val => {
-    //     val;
-    //   }
-    // });
-
     const loadMoreIssues = async () => {
-      // console.log("cursor", result);
-      // loadingMore.value = true;
       await fetchMore({});
 
       //@ts-expect-error need to add the issue interface
       variables.value.after = result.value.repository.issues.pageInfo.endCursor;
-
-      console.log(result);
-
-      ////@ts-expect-error need to add the issue interface
-      // issues.value.push(...result.value.repository.issues.nodes);
-      // console.log(moreResult);
-      // console.log(result);
-
-      ////@ts-expect-error need to add the issue interface
-      // console.log(moreResult.data.repository.issues.pageInfo.endCursor);
-
-      ////@ts-expect-error need to add the issue interface
-      // plusOne.value = moreResult.data.repository.issues.pageInfo.endCursor;
-
-      // //@ts-expect-error need to add the issue interface
-      // cursor.value = moreResult.data.repository.issues.pageInfo.endCursor;
-      // console.log("updated cursor:", plusOne.value);
-
-      ////@ts-expect-error need to add the issue interface
-      // moreIssues.value.push(...result.data.repository.issues.nodes);
-      // // console.log(moreIssues.value);
-
-      // loadingMore.value = false;
-      // //@ts-expect-error need to add the issue interface
-      // loadingMoreError.value = moreResult.error;
-      // return moreIssues.value;
     };
 
     return {
@@ -117,10 +72,7 @@ export default defineComponent({
       error,
       loading,
       issues,
-      moreIssues,
-      loadMoreIssues,
-      loadingMoreError,
-      loadingMore
+      loadMoreIssues
     };
   }
 });

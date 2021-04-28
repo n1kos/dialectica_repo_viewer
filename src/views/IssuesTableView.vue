@@ -157,18 +157,6 @@ export default defineComponent({
         false;
       }
     },
-    loadingMore: {
-      type: Boolean,
-      default() {
-        false;
-      }
-    },
-    loadingMoreError: {
-      type: Boolean,
-      default() {
-        false;
-      }
-    },
     searchOptions: {
       type: Object,
       default() {
