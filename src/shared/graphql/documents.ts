@@ -58,10 +58,12 @@ export const SEARCH_REPOS_ISSUES = gql`
   query SearchRepoIssues($first: Int!, $owner: String!, $name: String!) {
     repository(owner: $owner, name: $name) {
       issues(first: $first, states: OPEN) {
-        edges {
-          node {
-            ...issues
-          }
+        nodes {
+          ...issues
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
         }
       }
     }
@@ -81,9 +83,6 @@ export const SEARCH_REPOS_ISSUES_MORE = gql`
       issues(first: $first, after: $after) {
         nodes {
           ...issues
-        }
-        edges {
-          cursor
         }
         pageInfo {
           endCursor

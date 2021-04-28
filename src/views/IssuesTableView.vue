@@ -1,7 +1,4 @@
 <template>
-  <!-- <div>
-    {{ issues }}
-  </div> -->
   <table class="table" v-if="issues.length">
     <thead>
       <tr>
@@ -71,31 +68,51 @@
         </th>
       </tr>
     </tfoot>
-
     <tbody>
       <tr v-for="(issue, idx) in issues" :key="idx">
         <td colspan="1">
-          {{ issue.node.number }}
+          {{ issue.number }}
         </td>
         <td colspan="2">
-          {{ issue.node.title }}
+          {{ issue.title }}
         </td>
         <td colspan="1">
-          {{ issue.node.author.login }}
+          {{ issue.author.login }}
         </td>
         <td colspan="1">
-          {{ issue.node.comments.totalCount }}
+          {{ issue.comments.totalCount }}
         </td>
         <td colspan="1">
-          {{ issue.node.createdAt }}
+          {{ issue.createdAt }}
         </td>
         <td colspan="1">
-          {{ issue.node.state }}
+          {{ issue.state }}
         </td>
-        <!-- <td>
-        {{ issue }}
-      </td> -->
       </tr>
+    </tbody>
+    <tbody v-if="moreIssues.length">
+      <tr v-for="(issue, idx) in moreIssues" :key="idx">
+        <td colspan="1">
+          {{ issue.number }}
+        </td>
+        <td colspan="2">
+          {{ issue.title }}
+        </td>
+        <td colspan="1">
+          {{ issue.author.login }}
+        </td>
+        <td colspan="1">
+          {{ issue.comments.totalCount }}
+        </td>
+        <td colspan="1">
+          {{ issue.createdAt }}
+        </td>
+        <td colspan="1">
+          {{ issue.state }}
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
       <tr>
         <td colspan="7">
           <button
@@ -112,19 +129,12 @@
           loading
         </td>
       </tr>
-      <tr v-else>
-        <td>
-          {{ issuesMore }}
-        </td>
-      </tr>
     </tbody>
   </table>
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs } from "vue";
-import { useQuery, useResult } from "@vue/apollo-composable";
-import { SEARCH_REPOS_ISSUES_MORE } from "@/shared/graphql/documents";
+import { defineComponent, reactive, toRefs } from "vue";
 
 export default defineComponent({
   name: "IssuesDataTable",
@@ -133,6 +143,24 @@ export default defineComponent({
       type: Object,
       default() {
         return {};
+      }
+    },
+    moreIssues: {
+      type: [],
+      default() {
+        return [];
+      }
+    },
+    loadingMore: {
+      type: Boolean,
+      default() {
+        false;
+      }
+    },
+    loadingMoreError: {
+      type: Boolean,
+      default() {
+        false;
       }
     },
     searchOptions: {
@@ -147,61 +175,15 @@ export default defineComponent({
     }
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setup(props: { searchOptions: Record<string, any> }) {
-    // const searchOptions = {
-    //   //@ts-expect-error need to add the issue interface
-    //   owner: repository.value.node.owner.login,
-    //   //@ts-expect-error need to add the issue interface
-    //   name: repository.value.node.name,
-    //   first: 20
-    // };
-    const { searchOptions } = { ...toRefs(props) };
+  setup(props, context) {
+    const loadMoreIssues = () => {
+      context.emit("loadMoreIssues");
+    };
 
-    console.log(searchOptions.value);
-
-    const { result, loading, error } = useQuery<{}>(SEARCH_REPOS_ISSUES_MORE, {
-      ...searchOptions.value,
-      after: "Y3Vyc29yOnYyOpHOAOp4ag=="
-    });
-
-    const issuesMore = useResult(
-      result,
-      [],
-      //@ts-expect-error need to add the issue interface
-      data => data.repository.issues.edges
-    );
     return {
-      error,
-      loading,
-      issuesMore
+      loadMoreIssues
     };
   }
-  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // setup(props: any, context: any) {
-  //   const searchOptions = reactive({
-  //     ...context.searchOptions,
-  //     cursor: "Y3Vyc29yOnYyOpHOAOp4ag=="
-  //   });
-  //   const loadMoreIssues = () => {
-  //     const { result, loading, error } = useQuery<{}>(
-  //       SEARCH_REPOS_ISSUES_MORE,
-  //       searchOptions
-  //     );
-
-  //     const issues = useResult(
-  //       result,
-  //       [],
-  //       //@ts-expect-error need to add the issue interface
-  //       data => data.repository.issues.edges
-  //     );
-
-  //     console.log(issues);
-
-  //     return issues;
-  //   };
-  //   return { loadMoreIssues };
-  // }
 });
 </script>
 
