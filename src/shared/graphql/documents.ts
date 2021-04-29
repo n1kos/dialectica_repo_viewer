@@ -13,10 +13,10 @@ const REPO_FRAGMENT = gql`
     description
     forkCount
     createdAt
-    issues(states: OPEN) {
+    issues {
       totalCount
     }
-    pullRequests(states: OPEN) {
+    pullRequests {
       totalCount
     }
   }
@@ -24,7 +24,6 @@ const REPO_FRAGMENT = gql`
 
 const ISSUES_FRAGMENT = gql`
   fragment issues on Issue {
-    body
     comments {
       totalCount
     }
@@ -46,24 +45,6 @@ export const SEARCH_REPOS = gql`
       edges {
         node {
           ...repo
-        }
-      }
-    }
-  }
-`;
-
-export const SEARCH_REPOS_ISSUES = gql`
-  ${ISSUES_FRAGMENT}
-
-  query SearchRepoIssues($first: Int!, $owner: String!, $name: String!) {
-    repository(owner: $owner, name: $name) {
-      issues(first: $first, states: OPEN) {
-        nodes {
-          ...issues
-        }
-        pageInfo {
-          endCursor
-          hasNextPage
         }
       }
     }
