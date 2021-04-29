@@ -6,13 +6,17 @@
     <span class="is-relative" style="left: 10px;">
       <span
         class="is-clickable"
-        :class="{isActive : isActive}"
         style="position: absolute; top:-10px"
-        @click.prevent="submitHandler('asc')"
+        @click.prevent="submitHandler('asc', $event)"
+        data-active="false"
       >
         <i class="arrow up" />
       </span>
-      <span class="is-clickable" @click.prevent="submitHandler('des')">
+      <span
+        class="is-clickable"
+        @click.prevent="submitHandler('des', $event)"
+        data-active="false"
+      >
         <i class="arrow down" />
       </span>
     </span>
@@ -32,9 +36,9 @@ export default defineComponent({
       }
     },
     colSpan: {
-      type: Number,
+      type: String,
       default() {
-        1;
+        "";
       }
     },
     sortFunctionLabel: {
@@ -46,7 +50,20 @@ export default defineComponent({
   },
 
   setup(props, context) {
-    const submitHandler = (payload: string) => {
+    const submitHandler = (payload: string, event: any) => {
+      // could use models, prefer to play with DOM a little
+      // the sorting option that was clicked will be the 'active' one
+      // and it will be hidden. every other sorting option will be available
+      let transElement: HTMLElement;
+      if (event.srcElement.nodeName === "I") {
+        transElement = event.srcElement.parentElement;
+      } else {
+        transElement = event.srcElement;
+      }
+      document.querySelectorAll("[data-active]").forEach(_element => {
+        _element.setAttribute("data-active", "false");
+      });
+      transElement.setAttribute("data-active", "true");
       //@ts-expect-error define types
       context.emit(props.sortFunctionLabel, payload);
     };

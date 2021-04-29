@@ -63,6 +63,8 @@ export default defineComponent({
     );
 
     onResult(data => {
+      // console.log(data);
+
       //@ts-expect-error need to add the issue interface
       issues.value.push(...result.value.repository.issues.nodes);
     });

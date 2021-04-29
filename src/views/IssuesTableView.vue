@@ -183,7 +183,7 @@ export default defineComponent({
 
       //@ts-expect-error declare types
       leData.issues.sort((a, b) => {
-        console.log(a);
+        // console.log(a);
         if (a.number > b.number) {
           return 1;
         }
