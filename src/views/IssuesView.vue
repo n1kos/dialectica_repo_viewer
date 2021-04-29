@@ -3,9 +3,10 @@
     <span v-if="loading">Loading...</span>
     <span v-else-if="error">Error!</span>
     <IssuesDataTable
-      :issues="moreIssues"
+      :issues="issues"
       :loading="loading"
-      :searchOptions="searchOptions"
+      :error="error"
+      :hasNextPage="hasNextPage"
       @loadMoreIssues="loadMoreIssues"
     ></IssuesDataTable>
   </div>
@@ -31,7 +32,7 @@ export default defineComponent({
       (): RepoDataRequest | null => storageService.getselectedRepository()
     );
 
-    const moreIssues = ref([]);
+    const issues = ref([]);
 
     const searchOptions = {
       //@ts-expect-error need to add the issue interface
@@ -54,17 +55,16 @@ export default defineComponent({
       ...searchOptions
     });
 
-    const issues = useResult(
+    const hasNextPage = useResult(
       result,
-      [],
+      false,
       //@ts-expect-error need to add the issue interface
-      data => data.repository.issues.nodes
+      data => data.repository.issues.pageInfo.hasNextPage
     );
 
     onResult(data => {
-      console.log(data);
       //@ts-expect-error need to add the issue interface
-      moreIssues.value.push(...result.value.repository.issues.nodes);
+      issues.value.push(...result.value.repository.issues.nodes);
     });
 
     const loadMoreIssues = async () => {
@@ -84,7 +84,7 @@ export default defineComponent({
       loading,
       issues,
       loadMoreIssues,
-      moreIssues
+      hasNextPage
     };
   }
 });

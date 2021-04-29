@@ -1,5 +1,5 @@
 <template>
-  <table class="table" v-if="issues.length">
+  <table class="table  is-striped is-hoverable" v-if="issues.length">
     <thead>
       <tr>
         <th colspan="1">
@@ -89,16 +89,20 @@
           {{ issue.state }}
         </td>
       </tr>
-      <tr v-if="loading">
-        <td>
+      <tr>
+        <td v-if="loading">
           Loading...
+        </td>
+        <td v-else-if="error">
+          Error!
         </td>
       </tr>
       <tr>
         <td colspan="7">
           <button
+            :disabled="!hasNextPage"
             @click.prevent="loadMoreIssues"
-            class="is-primary"
+            class="button is-primary"
             type="submit"
           >
             Load More
@@ -127,14 +131,16 @@ export default defineComponent({
         false;
       }
     },
-    searchOptions: {
-      type: Object,
+    error: {
+      type: Boolean,
       default() {
-        return {
-          owner: "",
-          name: "",
-          first: 20
-        };
+        false;
+      }
+    },
+    hasNextPage: {
+      type: Boolean,
+      default() {
+        false;
       }
     }
   },
