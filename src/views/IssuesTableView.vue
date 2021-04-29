@@ -6,7 +6,12 @@
           <abbr title="">
             Number
           </abbr>
-          <button @click.prevent="sortByNumber()" type="submit">Sort</button>
+          <button @click.prevent="sortByNumber('asc')" type="submit">
+            Sort
+          </button>
+          <button @click.prevent="sortByNumber('des')" type="submit">
+            Sort
+          </button>
         </th>
         <th colspan="1">
           <abbr title="">
@@ -17,7 +22,12 @@
           <abbr title="">
             Author
           </abbr>
-          <button @click.prevent="sortByAuthor()" type="submit">Sort</button>
+          <button @click.prevent="sortByAuthor('asc')" type="submit">
+            Sort
+          </button>
+          <button @click.prevent="sortByAuthor('des')" type="submit">
+            Sort
+          </button>
         </th>
         <th colspan="1">
           <abbr title="">
@@ -28,7 +38,12 @@
           <abbr title="">
             Created
           </abbr>
-          <button @click.prevent="sortByCreatedAt()" type="submit">Sort</button>
+          <button @click.prevent="sortByCreatedAt('asc')" type="submit">
+            Sort
+          </button>
+          <button @click.prevent="sortByCreatedAt('des')" type="submit">
+            Sort
+          </button>
         </th>
         <th colspan="1">
           <abbr title="">
@@ -154,12 +169,12 @@ export default defineComponent({
     };
 
     const leData = reactive({
-      //@ts-expect-error ojfiowjfo
+      //@ts-expect-error declare types
       issues: props.issues
     });
 
-    const sortByAuthor = () => {
-      //@ts-expect-error fiopjwioefjeiow
+    const sortByAuthor = (method: string) => {
+      //@ts-expect-error declare types
       leData.issues.sort((a, b) => {
         console.log(a);
         if (a.author.login > b.author.login) {
@@ -170,10 +185,13 @@ export default defineComponent({
         }
         return 0;
       });
+      if (method === "des") {
+        leData.issues.reverse();
+      }
     };
 
-    const sortByNumber = () => {
-      //@ts-expect-error fiopjwioefjeiow
+    const sortByNumber = (method: string) => {
+      //@ts-expect-error declare types
       leData.issues.sort((a, b) => {
         console.log(a);
         if (a.number > b.number) {
@@ -184,10 +202,14 @@ export default defineComponent({
         }
         return 0;
       });
+
+      if (method === "des") {
+        leData.issues.reverse();
+      }
     };
 
-    const sortByCreatedAt = () => {
-      //@ts-expect-error fiopjwioefjeiow
+    const sortByCreatedAt = (method: string) => {
+      //@ts-expect-error declare types
       leData.issues.sort((a, b) => {
         console.log(a);
         if (a.createdAt > b.createdAt) {
@@ -198,6 +220,9 @@ export default defineComponent({
         }
         return 0;
       });
+      if (method === "des") {
+        leData.issues.reverse();
+      }
     };
 
     const filteredDate = (d: string) => {
