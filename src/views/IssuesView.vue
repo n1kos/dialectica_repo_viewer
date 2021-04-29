@@ -54,22 +54,15 @@ export default defineComponent({
       //@ts-expect-error need to add the issue interface
       data => data.repository.issues.nodes
     );
-
-    const cursor = useResult(
-      result,
-      "",
-      //@ts-expect-error need to add the issue interface
-      data => data.repository.issues.pageInfo.endCursor
-    );
-
+   
     const loadMoreIssues = async () => {
-      const moreResult = await fetchMore({});
+      await fetchMore({});
 
       //@ts-expect-error need to add the issue interface
       variables.value.after = result.value.repository.issues.pageInfo.endCursor;
 
       //@ts-expect-error need to add the issue interface
-      moreIssues.value.push(...moreResult.data.repository.issues.nodes);
+      moreIssues.value.push(...result.value.repository.issues.nodes);
     };
 
     return {
