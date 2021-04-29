@@ -1,11 +1,12 @@
 <template>
-  <table class="table  is-striped is-hoverable" v-if="issues.length">
+  <table class="table  is-striped is-hoverable" v-if="leData.issues.length">
     <thead>
       <tr>
         <th colspan="1">
           <abbr title="">
             Number
           </abbr>
+          <button @click.prevent="sortByNumber()" type="submit">Sort</button>
         </th>
         <th colspan="1">
           <abbr title="">
@@ -16,6 +17,7 @@
           <abbr title="">
             Author
           </abbr>
+          <button @click.prevent="sortByAuthor()" type="submit">Sort</button>
         </th>
         <th colspan="1">
           <abbr title="">
@@ -26,6 +28,7 @@
           <abbr title="">
             Created
           </abbr>
+          <button @click.prevent="sortByCreatedAt()" type="submit">Sort</button>
         </th>
         <th colspan="1">
           <abbr title="">
@@ -69,7 +72,7 @@
       </tr>
     </tfoot>
     <tbody>
-      <tr v-for="(issue, idx) in issues" :key="idx">
+      <tr v-for="(issue, idx) in leData.issues" :key="idx">
         <td colspan="1">
           {{ issue.number }}
         </td>
@@ -83,7 +86,7 @@
           {{ issue.comments.totalCount }}
         </td>
         <td colspan="1">
-          {{ issue.createdAt }}
+          {{ filteredDate(issue.createdAt) }}
         </td>
         <td colspan="1">
           {{ issue.state }}
@@ -114,7 +117,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from "vue";
+import { defineComponent, reactive } from "vue";
 
 export default defineComponent({
   name: "IssuesDataTable",
@@ -150,8 +153,74 @@ export default defineComponent({
       context.emit("loadMoreIssues");
     };
 
+    const leData = reactive({
+      //@ts-expect-error ojfiowjfo
+      issues: props.issues
+    });
+
+    const sortByAuthor = () => {
+      //@ts-expect-error fiopjwioefjeiow
+      leData.issues.sort((a, b) => {
+        console.log(a);
+        if (a.author.login > b.author.login) {
+          return 1;
+        }
+        if (a.author.login < b.author.login) {
+          return -1;
+        }
+        return 0;
+      });
+    };
+
+    const sortByNumber = () => {
+      //@ts-expect-error fiopjwioefjeiow
+      leData.issues.sort((a, b) => {
+        console.log(a);
+        if (a.number > b.number) {
+          return 1;
+        }
+        if (a.number < b.number) {
+          return -1;
+        }
+        return 0;
+      });
+    };
+
+    const sortByCreatedAt = () => {
+      //@ts-expect-error fiopjwioefjeiow
+      leData.issues.sort((a, b) => {
+        console.log(a);
+        if (a.createdAt > b.createdAt) {
+          return 1;
+        }
+        if (a.createdAt < b.createdAt) {
+          return -1;
+        }
+        return 0;
+      });
+    };
+
+    const filteredDate = (d: string) => {
+      const theDate = new Date(d);
+      const ye = new Intl.DateTimeFormat("en", { year: "numeric" }).format(
+        theDate
+      );
+      const mo = new Intl.DateTimeFormat("en", { month: "short" }).format(
+        theDate
+      );
+      const da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(
+        theDate
+      );
+      return `${da}-${mo}-${ye}`;
+    };
+
     return {
-      loadMoreIssues
+      loadMoreIssues,
+      leData,
+      sortByAuthor,
+      sortByNumber,
+      sortByCreatedAt,
+      filteredDate
     };
   }
 });
