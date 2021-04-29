@@ -2,49 +2,34 @@
   <table class="table  is-striped is-hoverable" v-if="leData.issues.length">
     <thead>
       <tr>
-        <th colspan="1">
-          <abbr title="">
-            Number
-          </abbr>
-          <button @click.prevent="sortByNumber('asc')" type="submit">
-            Sort
-          </button>
-          <button @click.prevent="sortByNumber('des')" type="submit">
-            Sort
-          </button>
-        </th>
+        <DataTableHeader
+          elementLabel="Number"
+          sortFunctionLabel="sortByNumber"
+          colSpan="1"
+          @sortByNumber="sortByNumber"
+        />
         <th colspan="1">
           <abbr title="">
             Title
           </abbr>
         </th>
-        <th colspan="2">
-          <abbr title="">
-            Author
-          </abbr>
-          <button @click.prevent="sortByAuthor('asc')" type="submit">
-            Sort
-          </button>
-          <button @click.prevent="sortByAuthor('des')" type="submit">
-            Sort
-          </button>
-        </th>
+        <DataTableHeader
+          elementLabel="Author"
+          sortFunctionLabel="sortByAuthor"
+          colSpan="2"
+          @sortByAuthor="sortByAuthor"
+        />
         <th colspan="1">
           <abbr title="">
             Comments
           </abbr>
         </th>
-        <th colspan="1">
-          <abbr title="">
-            Created
-          </abbr>
-          <button @click.prevent="sortByCreatedAt('asc')" type="submit">
-            Sort
-          </button>
-          <button @click.prevent="sortByCreatedAt('des')" type="submit">
-            Sort
-          </button>
-        </th>
+        <DataTableHeader
+          elementLabel="Created"
+          sortFunctionLabel="sortByCreatedAt"
+          colSpan="1"
+          @sortByCreatedAt="sortByCreatedAt"
+        />
         <th colspan="1">
           <abbr title="">
             State
@@ -133,9 +118,12 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
-
+import DataTableHeader from "@/components/DataTableHeader.vue";
 export default defineComponent({
   name: "IssuesDataTable",
+  components: {
+    DataTableHeader
+  },
   props: {
     issues: {
       type: Object,
@@ -176,7 +164,7 @@ export default defineComponent({
     const sortByAuthor = (method: string) => {
       //@ts-expect-error declare types
       leData.issues.sort((a, b) => {
-        console.log(a);
+        // console.log(a);
         if (a.author.login > b.author.login) {
           return 1;
         }
@@ -191,6 +179,8 @@ export default defineComponent({
     };
 
     const sortByNumber = (method: string) => {
+      // console.log(method);
+
       //@ts-expect-error declare types
       leData.issues.sort((a, b) => {
         console.log(a);
@@ -211,7 +201,7 @@ export default defineComponent({
     const sortByCreatedAt = (method: string) => {
       //@ts-expect-error declare types
       leData.issues.sort((a, b) => {
-        console.log(a);
+        // console.log(a);
         if (a.createdAt > b.createdAt) {
           return 1;
         }
