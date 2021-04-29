@@ -3,12 +3,19 @@
     <abbr title="">
       {{ elementLabel }}
     </abbr>
-    <button @click.prevent="submitHandler('asc')" type="submit">
-      Sort
-    </button>
-    <button @click.prevent="submitHandler('des')" type="submit">
-      Sort
-    </button>
+    <span class="is-relative" style="left: 10px;">
+      <span
+        class="is-clickable"
+        :class="{isActive : isActive}"
+        style="position: absolute; top:-10px"
+        @click.prevent="submitHandler('asc')"
+      >
+        <i class="arrow up" />
+      </span>
+      <span class="is-clickable" @click.prevent="submitHandler('des')">
+        <i class="arrow down" />
+      </span>
+    </span>
   </th>
 </template>
 
@@ -51,4 +58,7 @@ export default defineComponent({
 });
 </script>
 
-<style></style>
+<style lang="scss">
+@import "@/design/_variables.scss";
+@import "@/design/DataTableHeader.scss";
+</style>
