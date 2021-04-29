@@ -3,17 +3,16 @@
     <span v-if="loading">Loading...</span>
     <span v-else-if="error">Error!</span>
     <IssuesDataTable
-      :issues="issues"
+      :issues="moreIssues"
       :loading="loading"
       :searchOptions="searchOptions"
       @loadMoreIssues="loadMoreIssues"
-      :moreIssues="moreIssues"
     ></IssuesDataTable>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ComputedRef, computed, ref, watch } from "vue";
+import { defineComponent, ComputedRef, computed, ref } from "vue";
 import { useQuery, useResult } from "@vue/apollo-composable";
 import { SEARCH_REPOS_ISSUES_MORE } from "@/shared/graphql/documents";
 import { RepoDataRequest } from "@/shared/modeling/model-static";
@@ -43,10 +42,17 @@ export default defineComponent({
       after: null
     };
 
-    const { result, variables, loading, error, fetchMore } = useQuery<{}>(
-      SEARCH_REPOS_ISSUES_MORE,
-      { fetchPolicy: "cache-and-network", ...searchOptions }
-    );
+    const {
+      result,
+      variables,
+      loading,
+      error,
+      fetchMore,
+      onResult
+    } = useQuery<{}>(SEARCH_REPOS_ISSUES_MORE, {
+      fetchPolicy: "cache-and-network",
+      ...searchOptions
+    });
 
     const issues = useResult(
       result,
@@ -54,15 +60,21 @@ export default defineComponent({
       //@ts-expect-error need to add the issue interface
       data => data.repository.issues.nodes
     );
-   
+
+    onResult(data => {
+      console.log(data);
+      //@ts-expect-error need to add the issue interface
+      moreIssues.value.push(...result.value.repository.issues.nodes);
+    });
+
     const loadMoreIssues = async () => {
       await fetchMore({});
 
       //@ts-expect-error need to add the issue interface
       variables.value.after = result.value.repository.issues.pageInfo.endCursor;
 
-      //@ts-expect-error need to add the issue interface
-      moreIssues.value.push(...result.value.repository.issues.nodes);
+      ////@ts-expect-error need to add the issue interface
+      // moreIssues.value.push(...result.value.repository.issues.nodes);
     };
 
     return {

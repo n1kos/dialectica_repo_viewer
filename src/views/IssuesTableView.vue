@@ -89,30 +89,11 @@
           {{ issue.state }}
         </td>
       </tr>
-    </tbody>
-    <tbody v-if="moreIssues.length">
-      <tr v-for="(issue, idx) in moreIssues" :key="idx">
-        <td colspan="1">
-          {{ issue.number }}
-        </td>
-        <td colspan="2">
-          {{ issue.title }}
-        </td>
-        <td colspan="1">
-          {{ issue.author.login }}
-        </td>
-        <td colspan="1">
-          {{ issue.comments.totalCount }}
-        </td>
-        <td colspan="1">
-          {{ issue.createdAt }}
-        </td>
-        <td colspan="1">
-          {{ issue.state }}
+      <tr v-if="loading">
+        <td>
+          Loading...
         </td>
       </tr>
-    </tbody>
-    <tbody>
       <tr>
         <td colspan="7">
           <button
@@ -122,11 +103,6 @@
           >
             Load More
           </button>
-        </td>
-      </tr>
-      <tr v-if="loading">
-        <td>
-          loading
         </td>
       </tr>
     </tbody>
@@ -140,12 +116,6 @@ export default defineComponent({
   name: "IssuesDataTable",
   props: {
     issues: {
-      type: Object,
-      default() {
-        return {};
-      }
-    },
-    moreIssues: {
       type: Object,
       default() {
         return {};
