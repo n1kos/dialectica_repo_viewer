@@ -119,3 +119,28 @@ export const SEARCH_REPOS_PULL_MORE = gql`
     }
   }
 `;
+
+export const SEARCH_REPOS_FORKS_MORE = gql`
+  query SearchRepoForksMore(
+    $first: Int!
+    $after: String
+    $owner: String!
+    $name: String!
+  ) {
+    repository(owner: $owner, name: $name) {
+      forks(first: $first, after: $after) {
+        nodes {
+          createdAt
+          stargazerCount
+          nameWithOwner
+          description
+          isPrivate
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+      }
+    }
+  }
+`;
