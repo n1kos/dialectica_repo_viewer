@@ -77,3 +77,45 @@ export const SEARCH_REPOS_ISSUES_MORE = gql`
     }
   }
 `;
+
+const PULL_FRAGMENT = gql`
+  fragment pulls on PullRequest {
+    comments {
+      totalCount
+    }
+    author {
+      login
+    }
+    createdAt
+    state
+    number
+    title
+  }
+`;
+
+export const SEARCH_REPOS_PULL_MORE = gql`
+  ${PULL_FRAGMENT}
+
+  query SearchRepoPullsMore(
+    $first: Int!
+    $after: String
+    $owner: String!
+    $name: String!
+  ) {
+    repository(owner: $owner, name: $name) {
+      pullRequests(
+        first: $first
+        after: $after
+        orderBy: { field: COMMENTS, direction: DESC }
+      ) {
+        nodes {
+          ...pulls
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+      }
+    }
+  }
+`;

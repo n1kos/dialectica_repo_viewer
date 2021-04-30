@@ -78,7 +78,16 @@
                   />
                   Closed
                 </span>
-                <!-- {{ filterState }} -->
+                <span class="dropdown-item">
+                  <input
+                    type="checkbox"
+                    class="checkbox"
+                    :checked="filterState[2]"
+                    @change="toggleFilterState(2)"
+                    name="state"
+                  />
+                  Merged
+                </span>
               </div>
             </div>
           </div>
@@ -170,7 +179,7 @@
 import { defineComponent, reactive, ref } from "vue";
 import DataTableHeader from "@/components/DataTableHeader.vue";
 export default defineComponent({
-  name: "IssuesDataTable",
+  name: "PullDataTable",
   components: {
     DataTableHeader
   },
@@ -304,6 +313,8 @@ export default defineComponent({
       if (state === "OPEN" && filterState.value[0] === true) {
         return true;
       } else if (state === "CLOSED" && filterState.value[1] === true) {
+        return true;
+      } else if (state === "MERGED" && filterState.value[2] === true) {
         return true;
       }
       return false;
