@@ -91,7 +91,7 @@ export default defineComponent({
       context.emit(props.sortFunctionLabel, payload);
     };
 
-    onMounted(() => {
+    onMounted((): void => {
       //@ts-expect-error define types
       if (props.hassDefaultActiveName !== undefined) {
         //@ts-expect-error define types

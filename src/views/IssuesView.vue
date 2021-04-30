@@ -62,9 +62,7 @@ export default defineComponent({
       data => data.repository.issues.pageInfo.hasNextPage
     );
 
-    onResult(data => {
-      // console.log(data);
-
+    onResult(() => {
       //@ts-expect-error need to add the issue interface
       issues.value.push(...result.value.repository.issues.nodes);
     });
