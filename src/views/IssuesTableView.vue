@@ -20,11 +20,12 @@
             colSpan="2"
             @sortByAuthor="sortByAuthor"
           />
-          <th colspan="1">
-            <abbr title="">
-              Comments
-            </abbr>
-          </th>
+          <DataTableHeader
+            elementLabel="Comments"
+            sortFunctionLabel="sortByCommentCount"
+            colSpan="1"
+            @sortByCommentCount="sortByCommentCount"
+          />
           <DataTableHeader
             elementLabel="Created"
             sortFunctionLabel="sortByCreatedAt"
@@ -228,8 +229,6 @@ export default defineComponent({
     };
 
     const sortByNumber = (method: string) => {
-      // console.log(method);
-
       //@ts-expect-error declare types
       leData.issues.sort((a, b) => {
         // console.log(a);
@@ -264,6 +263,23 @@ export default defineComponent({
       }
     };
 
+    const sortByCommentCount = (method: string) => {
+      //@ts-expect-error declare types
+      leData.issues.sort((a, b) => {
+        // console.log(a);
+        if (a.comments.totalCount > b.comments.totalCount) {
+          return 1;
+        }
+        if (a.comments.totalCount < b.comments.totalCount) {
+          return -1;
+        }
+        return 0;
+      });
+
+      if (method === "des") {
+        leData.issues.reverse();
+      }
+    };
     const filteredDate = (d: string) => {
       const theDate = new Date(d);
       const ye = new Intl.DateTimeFormat("en", { year: "numeric" }).format(
@@ -307,6 +323,7 @@ export default defineComponent({
       sortByAuthor,
       sortByNumber,
       sortByCreatedAt,
+      sortByCommentCount,
       filteredDate,
       filterState,
       toggleFilterState,
