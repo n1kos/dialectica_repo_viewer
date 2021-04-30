@@ -3,12 +3,17 @@
     <abbr title="">
       {{ elementLabel }}
     </abbr>
-    <span class="is-relative" style="left: 10px;">
+    <span
+      class="is-relative"
+      style="left: 10px;"
+      :data-name="hassDefaultActiveName"
+    >
       <span
         class="is-clickable"
         style="position: absolute; top:-10px"
         @click.prevent="submitHandler('asc', $event)"
         data-active="false"
+        data-method="asc"
       >
         <i class="arrow up" />
       </span>
@@ -17,6 +22,7 @@
         style="position: absolute;"
         @click.prevent="submitHandler('des', $event)"
         data-active="false"
+        data-method="des"
       >
         <i class="arrow down" />
       </span>
@@ -25,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onMounted } from "vue";
 
 export default defineComponent({
   name: "DataTableHeader",
@@ -42,6 +48,21 @@ export default defineComponent({
         "";
       }
     },
+    hassDefaultActiveName: {
+      type: String,
+      required: false,
+      default() {
+        "";
+      }
+    },
+    hassDefaultActiveMethod: {
+      type: String,
+      required: false,
+      default() {
+        "";
+      }
+    },
+
     sortFunctionLabel: {
       type: String,
       default() {
@@ -51,6 +72,7 @@ export default defineComponent({
   },
 
   setup(props, context) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const submitHandler = (payload: string, event: any) => {
       // could use models, prefer to play with DOM a little
       // the sorting option that was clicked will be the 'active' one
@@ -69,6 +91,21 @@ export default defineComponent({
       context.emit(props.sortFunctionLabel, payload);
     };
 
+    onMounted(() => {
+      //@ts-expect-error define types
+      if (props.hassDefaultActiveName !== undefined) {
+        //@ts-expect-error define types
+        const defName = props.hassDefaultActiveName;
+        const baseElement: HTMLElement | null = document.querySelector(
+          `[data-name="${defName}"]`
+        );
+        //@ts-expect-error define types
+        baseElement
+          //@ts-expect-error define types
+          .querySelector(`[data-method=${props.hassDefaultActiveMethod}]`)
+          .setAttribute("data-active", "true");
+      }
+    });
     return {
       submitHandler
     };

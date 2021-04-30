@@ -61,7 +61,11 @@ export const SEARCH_REPOS_ISSUES_MORE = gql`
     $name: String!
   ) {
     repository(owner: $owner, name: $name) {
-      issues(first: $first, after: $after) {
+      issues(
+        first: $first
+        after: $after
+        orderBy: { field: COMMENTS, direction: DESC }
+      ) {
         nodes {
           ...issues
         }

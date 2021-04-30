@@ -22,6 +22,8 @@
           />
           <DataTableHeader
             elementLabel="Comments"
+            hassDefaultActiveName="comments"
+            hassDefaultActiveMethod="des"
             sortFunctionLabel="sortByCommentCount"
             colSpan="1"
             @sortByCommentCount="sortByCommentCount"
@@ -214,7 +216,6 @@ export default defineComponent({
     const sortByAuthor = (method: string) => {
       //@ts-expect-error declare types
       leData.issues.sort((a, b) => {
-        // console.log(a);
         if (a.author.login > b.author.login) {
           return 1;
         }
@@ -231,7 +232,6 @@ export default defineComponent({
     const sortByNumber = (method: string) => {
       //@ts-expect-error declare types
       leData.issues.sort((a, b) => {
-        // console.log(a);
         if (a.number > b.number) {
           return 1;
         }
@@ -249,7 +249,6 @@ export default defineComponent({
     const sortByCreatedAt = (method: string) => {
       //@ts-expect-error declare types
       leData.issues.sort((a, b) => {
-        // console.log(a);
         if (a.createdAt > b.createdAt) {
           return 1;
         }
