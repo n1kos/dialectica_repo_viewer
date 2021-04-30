@@ -1,123 +1,172 @@
 <template>
-  <table class="table  is-striped is-hoverable" v-if="leData.issues.length">
-    <thead>
-      <tr>
-        <DataTableHeader
-          elementLabel="Number"
-          sortFunctionLabel="sortByNumber"
-          colSpan="1"
-          @sortByNumber="sortByNumber"
-        />
-        <th colspan="1">
-          <abbr title="">
-            Title
-          </abbr>
-        </th>
-        <DataTableHeader
-          elementLabel="Author"
-          sortFunctionLabel="sortByAuthor"
-          colSpan="2"
-          @sortByAuthor="sortByAuthor"
-        />
-        <th colspan="1">
-          <abbr title="">
-            Comments
-          </abbr>
-        </th>
-        <DataTableHeader
-          elementLabel="Created"
-          sortFunctionLabel="sortByCreatedAt"
-          colSpan="1"
-          @sortByCreatedAt="sortByCreatedAt"
-        />
-        <th colspan="1">
-          <abbr title="">
-            State
-          </abbr>
-        </th>
-      </tr>
-    </thead>
-    <tfoot>
-      <tr>
-        <th colspan="1">
-          <abbr title="">
-            Number
-          </abbr>
-        </th>
-        <th colspan="1">
-          <abbr title="">
-            Title
-          </abbr>
-        </th>
-        <th colspan="2">
-          <abbr title="">
-            Author
-          </abbr>
-        </th>
-        <th colspan="1">
-          <abbr title="">
-            Comments
-          </abbr>
-        </th>
-        <th colspan="1">
-          <abbr title="">
-            Created
-          </abbr>
-        </th>
-        <th colspan="1">
-          <abbr title="">
-            State
-          </abbr>
-        </th>
-      </tr>
-    </tfoot>
-    <tbody>
-      <tr v-for="(issue, idx) in leData.issues" :key="idx">
-        <td colspan="1">
-          {{ issue.number }}
-        </td>
-        <td colspan="2">
-          {{ issue.title }}
-        </td>
-        <td colspan="1">
-          {{ issue.author.login }}
-        </td>
-        <td colspan="1">
-          {{ issue.comments.totalCount }}
-        </td>
-        <td colspan="1">
-          {{ filteredDate(issue.createdAt) }}
-        </td>
-        <td colspan="1">
-          {{ issue.state }}
-        </td>
-      </tr>
-      <tr>
-        <td v-if="loading">
-          Loading...
-        </td>
-        <td v-else-if="error">
-          Error!
-        </td>
-      </tr>
-      <tr>
-        <td colspan="7">
-          <button
-            :disabled="!hasNextPage"
-            @click.prevent="loadMoreIssues"
-            class="button is-primary"
-            type="submit"
-          >
-            Load More
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-container">
+    <table class="table  is-striped is-hoverable" v-if="leData.issues.length">
+      <thead>
+        <tr>
+          <DataTableHeader
+            elementLabel="Number"
+            sortFunctionLabel="sortByNumber"
+            colSpan="1"
+            @sortByNumber="sortByNumber"
+          />
+          <th colspan="1">
+            <abbr title="">
+              Title
+            </abbr>
+          </th>
+          <DataTableHeader
+            elementLabel="Author"
+            sortFunctionLabel="sortByAuthor"
+            colSpan="2"
+            @sortByAuthor="sortByAuthor"
+          />
+          <th colspan="1">
+            <abbr title="">
+              Comments
+            </abbr>
+          </th>
+          <DataTableHeader
+            elementLabel="Created"
+            sortFunctionLabel="sortByCreatedAt"
+            colSpan="1"
+            @sortByCreatedAt="sortByCreatedAt"
+          />
+          <th colspan="1">
+            <abbr title="">
+              State
+            </abbr>
+
+            <div class="dropdown" :class="{ 'is-active': isActive }">
+              <div class="dropdown-trigger">
+                <button
+                  @click.prevent="toggleMenu"
+                  class="button is-borderless is-shadowless is-small"
+                  aria-haspopup="true"
+                  aria-controls="dropdown-menu"
+                >
+                  <span class="icon is-small">
+                    <i class="arrow down" aria-hidden="true"></i>
+                  </span>
+                </button>
+              </div>
+              <div
+                class="dropdown-menu"
+                id="dropdown-menu"
+                role="menu"
+                style="position: absolute; left: -30px;"
+              >
+                <div class="dropdown-content" style="width: fit-content; ">
+                  <span class="dropdown-item">
+                    <input
+                      type="checkbox"
+                      class="checkbox"
+                      :checked="filterState[0]"
+                      name="state"
+                      @change="toggleFilterState(0)"
+                    />
+                    Open
+                  </span>
+                  <span class="dropdown-item">
+                    <input
+                      type="checkbox"
+                      class="checkbox"
+                      :checked="filterState[1]"
+                      @change="toggleFilterState(1)"
+                      name="state"
+                    />
+                    Closed
+                  </span>
+                  <!-- {{ filterState }} -->
+                </div>
+              </div>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th colspan="1">
+            <abbr title="">
+              Number
+            </abbr>
+          </th>
+          <th colspan="1">
+            <abbr title="">
+              Title
+            </abbr>
+          </th>
+          <th colspan="2">
+            <abbr title="">
+              Author
+            </abbr>
+          </th>
+          <th colspan="1">
+            <abbr title="">
+              Comments
+            </abbr>
+          </th>
+          <th colspan="1">
+            <abbr title="">
+              Created
+            </abbr>
+          </th>
+          <th colspan="1">
+            <abbr title="">
+              State
+            </abbr>
+          </th>
+        </tr>
+      </tfoot>
+      <tbody>
+        <template v-for="(issue, idx) in leData.issues" :key="idx">
+          <tr v-if="filterByState(issue.state)">
+            <td colspan="1">
+              {{ issue.number }}
+            </td>
+            <td colspan="2">
+              {{ issue.title }}
+            </td>
+            <td colspan="1">
+              {{ issue.author.login }}
+            </td>
+            <td colspan="1">
+              {{ issue.comments.totalCount }}
+            </td>
+            <td colspan="1">
+              {{ filteredDate(issue.createdAt) }}
+            </td>
+            <td colspan="1">
+              {{ issue.state }}
+            </td>
+          </tr>
+        </template>
+        <tr>
+          <td v-if="loading">
+            Loading...
+          </td>
+          <td v-else-if="error">
+            Error!
+          </td>
+        </tr>
+        <tr>
+          <td colspan="7">
+            <button
+              :disabled="!hasNextPage"
+              @click.prevent="loadMoreIssues"
+              class="button is-primary"
+              type="submit"
+            >
+              Load More
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 import DataTableHeader from "@/components/DataTableHeader.vue";
 export default defineComponent({
   name: "IssuesDataTable",
@@ -229,13 +278,41 @@ export default defineComponent({
       return `${da}-${mo}-${ye}`;
     };
 
+    const filterState = ref([true, false]);
+    const toggleFilterState = (idx: number): void => {
+      filterState.value[idx] = !filterState.value[idx];
+      // vue known issue with checkboxes
+      // if (filterState.value.every(item => item === false)) {
+      //   filterState.value.fill(true);
+      // }
+    };
+
+    const filterByState = (state: string) => {
+      if (state === "OPEN" && filterState.value[0] === true) {
+        return true;
+      } else if (state === "CLOSED" && filterState.value[1] === true) {
+        return true;
+      }
+      return false;
+    };
+
+    const isActive = ref(false);
+    const toggleMenu = (): void => {
+      isActive.value = !isActive.value;
+    };
+
     return {
       loadMoreIssues,
       leData,
       sortByAuthor,
       sortByNumber,
       sortByCreatedAt,
-      filteredDate
+      filteredDate,
+      filterState,
+      toggleFilterState,
+      isActive,
+      filterByState,
+      toggleMenu
     };
   }
 });

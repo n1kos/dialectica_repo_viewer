@@ -14,6 +14,7 @@
       </span>
       <span
         class="is-clickable"
+        style="position: absolute;"
         @click.prevent="submitHandler('des', $event)"
         data-active="false"
       >
