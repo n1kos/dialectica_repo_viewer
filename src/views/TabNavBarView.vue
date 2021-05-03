@@ -66,4 +66,10 @@ export default defineComponent({
 });
 </script>
 
-<style></style>
+<style lang="scss">
+@import "@/design/_variables.scss";
+.tabs .router-link-active {
+  border-bottom-color: $primary;
+  color: $primary;
+}
+</style>
