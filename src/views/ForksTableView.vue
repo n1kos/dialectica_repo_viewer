@@ -118,7 +118,7 @@
             {{ issue.stargazerCount }}
           </td>
           <td colspan="1">
-            {{ filteredDate(issue.createdAt) }}
+            {{ filters.filteredDate(issue.createdAt) }}
           </td>
           <td colspan="1">
             {{ filteredState(issue.isPrivate) }}
@@ -152,6 +152,8 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
 import DataTableHeader from "@/components/DataTableHeader.vue";
+import filters from "@/shared/helpers/filters";
+
 export default defineComponent({
   name: "ForksDataTable",
   components: {
@@ -244,20 +246,6 @@ export default defineComponent({
       }
     };
 
-    const filteredDate = (d: string) => {
-      const theDate = new Date(d);
-      const ye = new Intl.DateTimeFormat("en", { year: "numeric" }).format(
-        theDate
-      );
-      const mo = new Intl.DateTimeFormat("en", { month: "short" }).format(
-        theDate
-      );
-      const da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(
-        theDate
-      );
-      return `${da}-${mo}-${ye}`;
-    };
-
     const filteredState = (d: boolean) => {
       const mapped = ["Public", "Private"];
       const idx = d ? 1 : 0;
@@ -293,7 +281,7 @@ export default defineComponent({
       sortByRepoAndOwner,
       sortByCreatedAt,
       sortByStarGazerCount,
-      filteredDate,
+      filters,
       filterState,
       toggleFilterState,
       isActive,

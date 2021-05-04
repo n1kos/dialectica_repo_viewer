@@ -144,7 +144,7 @@
             {{ issue.comments.totalCount }}
           </td>
           <td colspan="1">
-            {{ filteredDate(issue.createdAt) }}
+            {{ filters.filteredDate(issue.createdAt) }}
           </td>
           <td colspan="1">
             {{ issue.state }}
@@ -178,6 +178,8 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
 import DataTableHeader from "@/components/DataTableHeader.vue";
+import filters from "@/shared/helpers/filters";
+
 export default defineComponent({
   name: "PullDataTable",
   components: {
@@ -286,19 +288,6 @@ export default defineComponent({
         leData.issues.reverse();
       }
     };
-    const filteredDate = (d: string) => {
-      const theDate = new Date(d);
-      const ye = new Intl.DateTimeFormat("en", { year: "numeric" }).format(
-        theDate
-      );
-      const mo = new Intl.DateTimeFormat("en", { month: "short" }).format(
-        theDate
-      );
-      const da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(
-        theDate
-      );
-      return `${da}-${mo}-${ye}`;
-    };
 
     const filterState = ref([true, false]);
     const toggleFilterState = (idx: number): void => {
@@ -332,7 +321,7 @@ export default defineComponent({
       sortByNumber,
       sortByCreatedAt,
       sortByCommentCount,
-      filteredDate,
+      filters,
       filterState,
       toggleFilterState,
       isActive,

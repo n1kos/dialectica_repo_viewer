@@ -12,6 +12,7 @@ const REPO_FRAGMENT = gql`
     url
     description
     forkCount
+    stargazerCount
     createdAt
     issues {
       totalCount

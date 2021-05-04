@@ -6,6 +6,12 @@
     </div>
     <TabNavBarView :repository="repository"></TabNavBarView>
     <router-view></router-view>
+    <span v-if="$route.name == 'RepoRoute'">
+      Click on a tab to get more info or go to
+      <a target="_blank" :href="repository.node.url">{{
+        repository.node.url
+      }}</a></span
+    >
   </div>
 </template>
 <script lang="ts">
