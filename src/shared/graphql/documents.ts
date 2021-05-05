@@ -13,6 +13,7 @@ const REPO_FRAGMENT = gql`
     description
     forkCount
     stargazerCount
+    viewerHasStarred
     createdAt
     issues {
       totalCount
@@ -141,6 +142,28 @@ export const SEARCH_REPOS_FORKS_MORE = gql`
           endCursor
           hasNextPage
         }
+      }
+    }
+  }
+`;
+
+export const ADD_STAR = gql`
+  mutation($repositoryId: ID!) {
+    addStar(input: { starrableId: $repositoryId }) {
+      starrable {
+        id
+        viewerHasStarred
+      }
+    }
+  }
+`;
+
+export const REMOVE_STAR = gql`
+  mutation($repositoryId: ID!) {
+    removeStar(input: { starrableId: $repositoryId }) {
+      starrable {
+        id
+        viewerHasStarred
       }
     }
   }
