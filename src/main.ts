@@ -1,45 +1,35 @@
 import { createApp, h, provide } from "vue";
 import {
   ApolloClient,
-  ApolloLink,
   InMemoryCache,
-  from,
-  HttpLink
+  createHttpLink
 } from "@apollo/client/core";
 import { ApolloClients } from "@vue/apollo-composable";
 import App from "./App.vue";
 import router from "./router";
+import { StorageService } from "@/shared/services/storage-service";
+import { setContext } from "@apollo/client/link/context";
 
-// import { StorageService } from "./shared/services/storage-service";
+const storageSrv = new StorageService();
 
-/**
- * ?this is just temporary so i wont have to type the token everytime
- */
-// const storageSrv = new StorageService();
-// const token =
-//   storageSrv.getApiToken() === null
-//     ? process.env.VUE_APP_GITHUB_ACCESS_TOKEN
-//     : storageSrv.getApiToken();
-// console.log(token);
+const httpLink = createHttpLink({
+  uri: "https://api.github.com/graphql"
+});
 
-const token = process.env.VUE_APP_GITHUB_ACCESS_TOKEN;
-
-const additiveLink = from([
-  new ApolloLink((operation, forward) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    operation.setContext(({ headers }: any) => ({
-      headers: {
-        ...headers,
-        authorization: token ? `Bearer ${token}` : null
-      }
-    }));
-    return forward(operation);
-  }),
-  new HttpLink({ uri: "https://api.github.com/graphql" })
-]);
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = storageSrv.getApiToken();
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : ""
+    }
+  };
+});
 
 const apolloClient = new ApolloClient({
-  link: additiveLink,
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache()
 });
 

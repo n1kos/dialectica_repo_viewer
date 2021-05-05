@@ -12,7 +12,6 @@ import SearchBar from "@/components/SearchBar.vue";
 import RepositoryList from "@/components/RepositoryList.vue";
 import { SearchData } from "@/shared/modeling/model-common";
 import { StorageService } from "@/shared/services/storage-service";
-// import Repository from "@/components/Repository.vue";
 
 export default defineComponent({
   name: "Home",
@@ -24,7 +23,7 @@ export default defineComponent({
   setup() {
     const storageSrv = new StorageService();
     const searchOptions = reactive({
-      query: "",
+      query: storageSrv.getSearchTerm(),
       limit: 10
     });
 

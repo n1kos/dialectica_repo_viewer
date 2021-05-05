@@ -40,6 +40,7 @@
                 <button
                   class="button  is-primary is-normal is-rounded"
                   type="submit"
+                  :disabled="enableSubmission()"
                   @click.prevent="handleInputChange"
                 >
                   Search
@@ -56,22 +57,29 @@
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
 import { SearchData } from "@/shared/modeling/model-common";
+import { StorageService } from "@/shared/services/storage-service";
 
 export default defineComponent({
   name: "SearchBar",
   setup(props, context) {
+    const storageSrv = new StorageService();
+    //@ts-expect-error types
     const searchData: SearchData = reactive({
-      token: "",
-      // TODO: change to-->repo: "react"
-      repo: "react"
+      token: storageSrv.getApiToken(),
+      repo: storageSrv.getSearchTerm()
     });
+
+    const enableSubmission = (): boolean => {
+      return searchData.token == "" || searchData.repo == "";
+    };
 
     const handleInputChange = () => {
       context.emit("search", searchData);
     };
     return {
       searchData,
-      handleInputChange
+      handleInputChange,
+      enableSubmission
     };
   }
 });
