@@ -70,7 +70,12 @@ export default defineComponent({
     });
 
     const enableSubmission = (): boolean => {
-      return searchData.token == "" || searchData.repo == "";
+      return (
+        searchData.token == null ||
+        searchData.token == "" ||
+        searchData.repo == null ||
+        searchData.repo == ""
+      );
     };
 
     const handleInputChange = () => {
