@@ -30,7 +30,17 @@ const authLink = setContext((_, { headers }) => {
 
 const apolloClient = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache({
+    addTypename: true,
+    typePolicies: {
+      repository: {
+        keyFields: ["id"]
+      },
+      issue: {
+        keyFields: ["id"]
+      }
+    }
+  })
 });
 
 const app = createApp({

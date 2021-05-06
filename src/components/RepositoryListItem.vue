@@ -51,8 +51,8 @@
             Stars:
             <span class="pl-2">{{ repository.node.stargazerCount }}</span>
           </span>
-          <span class="level-item">
-            {{ repository.node.viewerHasStarred }}
+          <span class="level-item is-size-5">
+            <span v-if="repository.node.viewerHasStarred">un-</span>star!
           </span>
         </div>
       </span>
@@ -61,18 +61,26 @@
 </template>
 <script lang="ts">
 import router from "@/router";
-import { defineComponent } from "vue";
+import { defineComponent, toRefs } from "vue";
 import { StorageService } from "@/shared/services/storage-service";
 import { RepoDataRequest } from "@/shared/modeling/model-static";
 import filters from "@/shared/helpers/filters";
-import { ADD_STAR, REMOVE_STAR } from "@/shared/graphql/documents";
+import {
+  ADD_STAR,
+  REMOVE_STAR,
+  SEARCH_REPOS
+} from "@/shared/graphql/documents";
 import {
   AddStarInput,
   AddStarPayload,
   RemoveStarInput,
-  RemoveStarPayload
+  RemoveStarPayload,
+  SearchResultItemConnection,
+  Repository
 } from "@octokit/graphql-schema";
 import { useMutation } from "@vue/apollo-composable";
+import { ApolloCache } from "@apollo/client/core";
+import { CacheData, QueryVariables } from "@/shared/modeling/model-common";
 
 export default defineComponent({
   name: "RepositoryItem",
@@ -89,14 +97,57 @@ export default defineComponent({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setup(props) {
     let selectedId: string;
+    const { repository, searchOptions } = toRefs(props);
+
     const storageService: StorageService = new StorageService();
     const selectItem = (item: RepoDataRequest): void => {
-      // console.log(item);
-
       storageService.setselectedRepository(item);
       router.push({
         name: "RepoRoute",
-        params: { id: props.repository.node.name }
+        params: { id: repository.value.node.name }
+      });
+    };
+
+    const overrideMutationStarCache = (
+      mutation: string,
+      cache: ApolloCache<CacheData>,
+      data: CacheData | null | undefined,
+      queryVariables: QueryVariables,
+      calcNewTotal: (totalCount: number) => number
+    ) => {
+      const cachedData = cache.readQuery<{
+        search: SearchResultItemConnection;
+      }>({
+        query: SEARCH_REPOS,
+        variables: queryVariables
+      });
+      cache.writeQuery({
+        query: SEARCH_REPOS,
+        data: Object.assign({}, cachedData, {
+          search: {
+            edges: cachedData!.search.edges!.map(edge => {
+              const repo = edge!.node as Repository;
+              const clonedRepo = {
+                ...repo,
+                stargazers: repo.stargazers
+              };
+
+              if (clonedRepo.id === data![mutation].starrable!.id) {
+                clonedRepo.viewerHasStarred = data![
+                  mutation
+                ].starrable!.viewerHasStarred;
+                clonedRepo.stargazerCount = calcNewTotal(
+                  clonedRepo.stargazerCount
+                );
+              }
+
+              return {
+                ...edge,
+                node: clonedRepo
+              };
+            })
+          }
+        })
       });
     };
 
@@ -106,6 +157,15 @@ export default defineComponent({
     >(ADD_STAR, () => ({
       variables: {
         repositoryId: selectedId
+      },
+      update: (cache, { data }) => {
+        overrideMutationStarCache(
+          "addStar",
+          cache,
+          data,
+          searchOptions.value,
+          stargazerCount => stargazerCount + 1
+        );
       }
     }));
 
@@ -117,6 +177,15 @@ export default defineComponent({
     >(REMOVE_STAR, () => ({
       variables: {
         repositoryId: selectedId
+      },
+      update: (cache, { data }) => {
+        overrideMutationStarCache(
+          "removeStar",
+          cache,
+          data,
+          searchOptions.value,
+          stargazerCount => stargazerCount - 1
+        );
       }
     }));
 
@@ -136,6 +205,6 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .is-starred {
-  background-color: black !important;
+  background-color: gold !important;
 }
 </style>

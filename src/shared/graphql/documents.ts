@@ -26,6 +26,7 @@ const REPO_FRAGMENT = gql`
 
 const ISSUES_FRAGMENT = gql`
   fragment issues on Issue {
+    id
     comments {
       totalCount
     }
@@ -63,6 +64,7 @@ export const SEARCH_REPOS_ISSUES_MORE = gql`
     $name: String!
   ) {
     repository(owner: $owner, name: $name) {
+      id
       issues(
         first: $first
         after: $after
