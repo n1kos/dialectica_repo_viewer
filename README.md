@@ -1,6 +1,9 @@
 # dialectica-app
 Test assesment for a company
 
+# Demo
+https://github-minimal-repo-browser.herokuapp.com/#/
+
 # Reqs
 ## Overview
 
