@@ -31,21 +31,6 @@ through a UI inspired by Dialectica's product designs.
 ![](https://res.cloudinary.com/sincospi/image/upload/c_scale,w_960/v1589276941/dialectica/assignment_filtered_table_1.png)
 _Mockup for guidance (ignore languages tab)_
 
-## Preparation
-
-You will use React and will be utilizing github's [graphql endpoint](https://developer.github.com/v4/).
-
-This repo contains your starting point.
-
-It is a [create-react-app](https://create-react-app.dev/docs/getting-started),
-uses [yarn](https://alligator.io/nodejs/npm-yarn-cheatsheet/) package manager,
-is configured with
-[Prettier](https://prettier.io/docs/en/editors.html)
-and
-[Apollo Client 3](https://www.apollographql.com/docs/react/v3.0-beta/).
-
-Note: You are NOT confined to use Apollo (you may remove it) and are encouraged to use any additional libraries you wish.
-
 ## Tasks
 
 ### Page layout
