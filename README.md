@@ -1,8 +1,14 @@
-# github minimal repo viewer
+# Github minimal repo viewer
 Test assesment for a company
 
 # Demo
 https://github-minimal-repo-browser.herokuapp.com/#/
+
+# Working knowledge of topics
+## Vue 3  : 0%
+## GraphQL: 0%
+## Apollo : 0%
+## TS     : 15%
 
 # Reqs
 ## Overview
@@ -101,14 +107,6 @@ Hence, create a chart to depict the % occupied by each one of the top 3 language
 Any additional languages should be bundled under label "other".
 
 You may use some charting lib like [chartjs](https://www.chartjs.org/samples/latest/charts/pie.html).
-
-# Working knowledge of topics
-## Vue 3  : 0%
-## GraphQL: 0%
-## Apollo : 0%
-## TS     : 15%
-
-Went for Vue 3 as I did have some knowledge of Vue 2. Little did I know of how different they are, especially when trying the new Composition API (which is more similar to REACT syntax) rather than the more familiar Options API
 
 ## Project setup
 ```
