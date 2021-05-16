@@ -1,4 +1,4 @@
-# dialectica-app
+# github minimal repo viewer
 Test assesment for a company
 
 # Demo
@@ -47,15 +47,6 @@ and
 Note: You are NOT confined to use Apollo (you may remove it) and are encouraged to use any additional libraries you wish.
 
 ## Tasks
-
-### Obtain a github access token
-
-Simply follow Github's instructions
-for [creating a personal access token for the command line](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)
-
-Note, you may wish to use a tool like
-[GraphiQL](https://www.electronjs.org/apps/graphiql)
-for building your queries initially.
 
 ### Page layout
 
@@ -126,11 +117,11 @@ Any additional languages should be bundled under label "other".
 
 You may use some charting lib like [chartjs](https://www.chartjs.org/samples/latest/charts/pie.html).
 
-## Working knowledge of topics
-   Vue 3  : 0%
-   GraphQL: 0%
-   Apollo : 0%
-   TS     : 15%
+# Working knowledge of topics
+## Vue 3  : 0%
+## GraphQL: 0%
+## Apollo : 0%
+## TS     : 15%
 
 Went for Vue 3 as I did have some knowledge of Vue 2. Little did I know of how different they are, especially when trying the new Composition API (which is more similar to REACT syntax) rather than the more familiar Options API
 
