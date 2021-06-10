@@ -1,4 +1,4 @@
-[![CodeScene Code Health](https://codescene.io/projects/16216/status-badges/code-health)](https://codescene.io/projects/16216)
+[![CodeScene Code Health](https://codescene.io/projects/16216/status-badges/code-health)](https://codescene.io/projects/16216)[![CodeScene System Mastery](https://codescene.io/projects/16216/status-badges/system-mastery)](https://codescene.io/projects/16216)[![CodeScene general](https://codescene.io/images/analyzed-by-codescene-badge.svg)](https://codescene.io/projects/16216)
 
 # Github minimal repo viewer
 Test assesment for a company
