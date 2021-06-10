@@ -1,3 +1,5 @@
+[![CodeScene Code Health](https://codescene.io/projects/16216/status-badges/code-health)](https://codescene.io/projects/16216)
+
 # Github minimal repo viewer
 Test assesment for a company
 
