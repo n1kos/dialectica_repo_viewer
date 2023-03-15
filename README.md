@@ -114,6 +114,10 @@ You may use some charting lib like [chartjs](https://www.chartjs.org/samples/lat
 ```
 npm install
 ```
+or if this fails
+```
+npm install --legacy-peer-deps
+```
 
 ### Compiles and hot-reloads for development
 ```
@@ -129,6 +133,7 @@ npm run build
 ```
 npm run lint
 ```
+Served at http://localhost:8080
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
